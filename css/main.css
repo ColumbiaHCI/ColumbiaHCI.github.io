@@ -1,0 +1,153 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  text-size-adjust: none;
+  -webkit-text-size-adjust: none;
+  -moz-text-size-adjust: none;
+  -ms-text-size-adjust: none;
+}
+
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.center-align {
+  width: 100%;
+  margin: auto;
+  text-align: center;
+  justify-content: center;
+}
+
+/* Navbar Styling */
+
+.navbar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 0px 50px;
+  height: 90px;
+}
+
+.navbar-collapse {
+  flex-grow: 0;
+}
+
+.nav-title-link {
+  color: black;
+  text-decoration: none;
+}
+
+.nav-title-link:hover {
+  text-decoration: underline;
+}
+
+.nav-link {
+  color: var(--primary-color);
+}
+
+.nav-link.active {
+  text-decoration: underline;
+}
+
+/* Small devices (portrait tablets and large phones, 800px and below) */
+@media only screen and (max-width: 800px) {
+  .navbar {
+    padding: 20px 20px;
+    background-color: white
+  }
+}
+
+/* Sections */
+
+.section {
+  padding-top: 100px;
+  padding-bottom: 10px;
+}
+
+/* About Section */
+
+#about-header {
+  margin-top: 40px;
+  padding: 0px 5px
+}
+
+#about-section {
+  background-image: url("/media/header.png");
+  background-color: #f1f59957;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  padding-left: 50px;
+  padding-right: 50px;
+  margin: auto;
+}
+
+/* Small devices (portrait tablets and large phones, 800px and below) */
+@media only screen and (max-width: 800px) {
+  #about-section {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+}
+
+#about-labs {
+  margin: auto;
+  justify-content: center;
+  width: 100%;
+  padding: 0;
+}
+
+.lab-card {
+  background-color: rgba(255, 255, 255, 0.8);
+  margin: 10px 10px;
+  box-shadow: 5px 5px 5px #00b8ff3d;
+}
+
+.lab-title {
+  height:70px;
+  padding: 5px 5px;
+}
+
+/* People Section */
+
+.people-card {
+  /*max-width: calc((100% - 32px) / 3);*/
+
+  overflow: hidden;
+}
+
+.people-card-content {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.people-image {
+  border-radius: 40px 0px;
+}
+
+/* Footer Styling */
+
+#footer {
+  width: 100%;
+  display: flex;
+  padding: 30px 50px;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Small devices (portrait tablets and large phones, 800px and below) */
+@media only screen and (max-width: 800px) {
+  #footer {
+    padding: 20px 20px;
+  }
+}

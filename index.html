@@ -1,1 +1,80 @@
-Hello World
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+    <link rel="icon" href="/media/logo.png" />
+		<title>HCI@Columbia University</title>
+    <meta name="description" content="Explore Human-Computer Interaction research and projects of Columbia University's HCI group">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/themes/smoothness/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
+    
+    <!-- import style -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
+		<link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/typo.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+		<script src="/js/main.js"></script>
+	</head>
+	<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg sticky-top navbar-light bg-light">
+      <a class="navbar-brand" href="#">
+        <img src="./media/logo.png" height=50px class="img-logo" alt="Columbia University crown combined with the acronym HCI">
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse ml-auto" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="#about-section">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#people-section">People</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#publication-section">Publications</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- HEADER -->
+    <div id="about-section" class="row section position-relative overflow-hidden">
+      <div id="about-header" class="row">
+        <div class="col-md">
+          <h1 class="display-4 font-weight-normal"><b>HCI@</b>Columbia University</h1>
+          <p class="lead font-weight-normal">We're on a mission to explore how people interact with 
+            technology in various domains and exciting new ways. Check out our vibrant <a href="#people-section">group of researchers</a> whoe share ideas, 
+            uncover insights, and investigate the future of human-computer interaction.</p>
+        </div>
+      </div>
+
+      <!-- loaded via js -->
+      <div id="about-labs" class="row pb-4"></div> 
+    
+    </div>
+
+    <!-- MAIN PAGE CONTENT -->
+    <div class="container"> 
+      <!-- loaded via js -->
+      <div id="people-section" class="row section position-relative gy-5 overflow-hidden"></div>
+
+      <!-- loaded via js -->
+      <div id="publication-section" class="row section position-relative overflow-hidden mt-4"></div>
+    </div> 
+
+    <!-- FOOTER START -->
+    <div id="footer" class="row bg-light">
+      Copyright ©2023 Columbia University
+    </div>
+
+	</body>
+</html>
