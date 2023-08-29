@@ -14,52 +14,119 @@ $(document).ready(function () {
     });
 });
   
+// function load_people() {
+//     // load people data
+//     csvData = $.ajax({
+//       type: "GET",
+//       url: "data/people.csv",
+//       dataType: "text/csv",
+//       async: false
+//     });
+  
+//     console.log("CSV data: "+ csvData.responseText);
+  
+//     // split the data into array of lines of type
+//     const csvLines = csvData.responseText.toString().split(/\r\n|\n/);
+//     data_role = csvLines.map(line => line.split(',')[0])
+//     data_names = csvLines.map(line => line.split(',')[1])
+//     data_page_url =csvLines.map(line => line.split(',')[2])
+//     data_pic_url =csvLines.map(line => line.split(',')[3])
+//     data_lab =csvLines.map(line => line.split(',')[4])
+//     data_lab_url =csvLines.map(line => line.split(',')[5])
+  
+//     console.log("Numbers of people found: "+data_names.length);
+  
+//     let people_container = $("#people-section").empty()
+//     let labs_container = $("#about-labs").empty()
+//     for(var i = 1; i < data_names.length; i++)
+//       {
+//         let card = document.createElement('div');
+//         if (data_role[i].indexOf("phd") >= 0) {
+//           $(card).addClass('col-md-2 col-sm-4 col-4 people-card').appendTo($(people_container));
+//           let card_content = document.createElement('div');
+//           $(card_content).addClass('people-card-content').appendTo($(card));
+//           $(card_content).html("<a target=_blank' href='"+data_page_url[i]+"'>"+
+//           "<img src='./media/headshots/"+data_pic_url[i]+"' class='row people-image responsive-image center-align' /></a>"+
+//           "<div class='row body-text pt-2 center-align'>Ph.D. Student</div>"+
+//           "<div class='row people-name center-align'><strong>"+data_names[i]+"</strong></div>")
+//         } else {
+//           $(card).addClass('lab-card col-lg-2 col-md-4 col-sm-6 col-12').appendTo($(labs_container));
+//           let card_content = document.createElement('div');
+//           $(card_content).addClass('lab-card-content').appendTo($(card));
+//           $(card_content).html("<a target=_blank' href='"+data_lab_url[i]+"'><div class='lab-title'>"+data_lab[i]+"</div></a>"+
+//           "<a target=_blank' href='"+data_lab_url[i]+"'><img src='./media/headshots/"+data_pic_url[i]+"' class='row responsive-image center-align' /></a>"+
+//           "<div class='row lab-professor-text pt-2 center-align'>"+data_names[i]+"</div>")
+//         }
+//       } 
+// }
+
 function load_people() {
-    // load people data
-    csvData = $.ajax({
+  // load people data
+  csvData = $.ajax({
       type: "GET",
       url: "data/people.csv",
       dataType: "text/csv",
       async: false
-    });
-  
-    console.log("CSV data: "+ csvData.responseText);
-  
-    // split the data into array of lines of type
-    const csvLines = csvData.responseText.toString().split(/\r\n|\n/);
-    data_role = csvLines.map(line => line.split(',')[0])
-    data_names = csvLines.map(line => line.split(',')[1])
-    data_page_url =csvLines.map(line => line.split(',')[2])
-    data_pic_url =csvLines.map(line => line.split(',')[3])
-    data_lab =csvLines.map(line => line.split(',')[4])
-    data_lab_url =csvLines.map(line => line.split(',')[5])
-  
-    console.log("Numbers of people found: "+data_names.length);
-  
-    let people_container = $("#people-section").empty()
-    let labs_container = $("#about-labs").empty()
-    for(var i = 1; i < data_names.length; i++)
-      {
-        let card = document.createElement('div');
-        if (data_role[i].indexOf("phd") >= 0) {
-          $(card).addClass('col-md-2 col-sm-4 col-4 people-card').appendTo($(people_container));
-          let card_content = document.createElement('div');
-          $(card_content).addClass('people-card-content').appendTo($(card));
-          $(card_content).html("<a target=_blank' href='"+data_page_url[i]+"'>"+
-          "<img src='./media/headshots/"+data_pic_url[i]+"' class='row people-image center-align' /></a>"+
-          "<div class='row body-text pt-2 center-align'>Ph.D. Student</div>"+
-          "<div class='row people-name center-align'><strong>"+data_names[i]+"</strong></div>")
-  
-        } else {
-          $(card).addClass('lab-card col').appendTo($(labs_container));
-          let card_content = document.createElement('div');
-          $(card_content).addClass('lab-card-content').appendTo($(card));
-          $(card_content).html("<a target=_blank' href='"+data_lab_url[i]+"'><div class='lab-title'>"+data_lab[i]+"</div></a>"+
-          "<img src='./media/headshots/"+data_pic_url[i]+"' class='row center-align' />"+
-          "<div class='row lab-professor-text pt-2 center-align'>"+data_names[i]+"</div>")
-        }
-      } 
+  });
+
+  console.log("CSV data: " + csvData.responseText);
+
+  // Split the data into an array of lines
+  const csvLines = csvData.responseText.toString().split(/\r\n|\n/);
+
+  let students = [];
+  let labs = [];
+
+  for (let i = 1; i < csvLines.length; i++) {
+      const data = csvLines[i].split(',');
+      const person = {
+          role: data[0],
+          name: data[1],
+          page_url: data[2],
+          pic_url: data[3],
+          lab: data[4],
+          lab_url: data[5]
+      }
+
+      if (person.role.indexOf("phd") >= 0) {
+          students.push(person);
+      } else {
+          labs.push(person);
+      }
+  }
+
+  // Sort students by name
+  students.sort((a, b) => a.name.localeCompare(b.name));
+
+  // Clear containers
+  let people_container = $("#people-section").empty();
+  let labs_container = $("#about-labs").empty();
+
+  // Populate student cards
+  for (let student of students) {
+      let card = document.createElement('div');
+      $(card).addClass('col-md-2 col-sm-4 col-4 people-card').appendTo(people_container);
+      let card_content = document.createElement('div');
+      $(card_content).addClass('people-card-content').appendTo(card);
+      $(card_content).html(`<a target='_blank' href='${student.page_url}'>
+          <img src='./media/headshots/${student.pic_url}' class='row people-image responsive-image center-align' /></a>
+          <div class='row body-text pt-2 center-align'>Ph.D. Student</div>
+          <div class='row people-name center-align'><strong>${student.name}</strong>
+          </div>`);
+  }
+
+  // Populate lab cards
+  for (let lab of labs) {
+      let card = document.createElement('div');
+      $(card).addClass('lab-card col-lg-2 col-md-4 col-sm-6 col-12').appendTo(labs_container);
+      let card_content = document.createElement('div');
+      $(card_content).addClass('lab-card-content').appendTo(card);
+      $(card_content).html(`<a target='_blank' href='${lab.lab_url}'><div class='lab-title'>${lab.lab}</div></a>
+          <a target='_blank' href='${lab.lab_url}'><img src='./media/headshots/${lab.pic_url}' class='row responsive-image center-align' /></a>
+          <div class='row lab-professor-text pt-2 center-align'>${lab.name}</div>`);
+  }
 }
+
 
 function load_publications() {
     // load publication data
@@ -96,7 +163,8 @@ function load_publications() {
     let year_title_2022 = document.createElement('div');
     $(year_title_2022).addClass('row mb-4').appendTo($(p_2022));
     $(year_title_2022).html("<strong>2022</strong>")
-    for(var i = 1; i < data_names.length; i++)
+
+    for(var i = 1; i < data_title.length; i++)
     {
         let entry_card = document.createElement('div');
         $(entry_card).addClass('row publication-card-content mb-4');

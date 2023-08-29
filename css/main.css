@@ -53,6 +53,7 @@ body {
   color: var(--primary-color);
 }
 
+
 .nav-link.active {
   text-decoration: underline;
 }
@@ -99,16 +100,16 @@ body {
 }
 
 #about-labs {
-  margin: auto;
-  justify-content: center;
-  width: 100%;
-  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;  /* This will center align your cards */
 }
 
 .lab-card {
   background-color: rgba(255, 255, 255, 0.8);
   margin: 10px 10px;
   box-shadow: 5px 5px 5px #00b8ff3d;
+  flex: 0 0 auto; /* This ensures that the lab card will not grow or shrink but will stay auto */
 }
 
 .lab-title {
@@ -117,6 +118,68 @@ body {
 }
 
 /* People Section */
+
+.responsive-image {
+  width: 190px;
+  height: 190px;
+  object-fit: cover;  /* This crops the image to fit into the defined width and height */
+  display: block;     /* Helps in aligning the image properly */
+}
+
+.people-card-content {
+  overflow: hidden;
+}
+
+@media (max-width: 1600px) {
+  .responsive-image {
+      width: 180px;
+      height: 180px;
+  }
+  .people-image {
+    border-radius: 25px 0px;
+  }
+}
+
+@media (max-width: 1400px) {
+  .responsive-image {
+      width: 150px;
+      height: 150px;
+  }
+  .people-image {
+    border-radius: 25px 0px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .responsive-image {
+      width: 120px;
+      height: 120px;
+  }
+  .people-image {
+    border-radius: 5px 0px;
+  }
+}
+
+@media (max-width: 1000px) {
+  .responsive-image {
+      width: 100px;
+      height: 100px;
+  }
+  .people-image {
+    border-radius: 5px 0px;
+  }
+}
+
+@media (max-width: 400px) {
+  .responsive-image {
+      width: 60px;
+      height: 60px;
+  }
+  .people-image {
+    border-radius: 5px 0px;
+  }
+}
+
 
 .people-card {
   /*max-width: calc((100% - 32px) / 3);*/
