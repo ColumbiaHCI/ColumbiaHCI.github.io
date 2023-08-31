@@ -112,13 +112,13 @@ a {
 	color: #000 !important;
 }
 a:hover {
-  font-weight: 500 !important;
+  font-weight: 400 !important;
 }
 .zoom {
 	transition: transform .2s;
 }
 .zoom:hover {
-  transform: scale(1.02); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+  transform: scale(1.02); 
 }
 
 p {
@@ -208,6 +208,9 @@ h4 {
 	.padding-row {
 		padding-top: 1rem !important;
 	}
+
+  #videoBackground {
+  display:none}
 }
 
 .person-image {

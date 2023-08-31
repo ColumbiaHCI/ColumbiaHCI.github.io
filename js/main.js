@@ -3,62 +3,17 @@ $(document).ready(function () {
     load_publications();
 
     // update elements on scroll
-    $(window).scroll(function(){
-        var distance = $(window).scrollTop();
-        $('.section').each(function (i) {
-            if ($(this).position().top <= distance + 250) {
-                $('.navbar-nav a').removeClass('active');
-                $('.navbar-nav a').eq(i).addClass('active');
-            }
-        });
-    });
+    // $(window).scroll(function(){
+    //     var distance = $(window).scrollTop();
+    //     $('.section').each(function (i) {
+    //         if ($(this).position().top <= distance + 250) {
+    //             $('.navbar-nav a').removeClass('active');
+    //             $('.navbar-nav a').eq(i).addClass('active');
+    //         }
+    //     });
+    // });
 });
-  
-// function load_people() {
-//     // load people data
-//     csvData = $.ajax({
-//       type: "GET",
-//       url: "data/people.csv",
-//       dataType: "text/csv",
-//       async: false
-//     });
-  
-//     console.log("CSV data: "+ csvData.responseText);
-  
-//     // split the data into array of lines of type
-//     const csvLines = csvData.responseText.toString().split(/\r\n|\n/);
-//     data_role = csvLines.map(line => line.split(',')[0])
-//     data_names = csvLines.map(line => line.split(',')[1])
-//     data_page_url =csvLines.map(line => line.split(',')[2])
-//     data_pic_url =csvLines.map(line => line.split(',')[3])
-//     data_lab =csvLines.map(line => line.split(',')[4])
-//     data_lab_url =csvLines.map(line => line.split(',')[5])
-  
-//     console.log("Numbers of people found: "+data_names.length);
-  
-//     let people_container = $("#people-section").empty()
-//     let labs_container = $("#about-labs").empty()
-//     for(var i = 1; i < data_names.length; i++)
-//       {
-//         let card = document.createElement('div');
-//         if (data_role[i].indexOf("phd") >= 0) {
-//           $(card).addClass('col-md-2 col-sm-4 col-4 people-card').appendTo($(people_container));
-//           let card_content = document.createElement('div');
-//           $(card_content).addClass('people-card-content').appendTo($(card));
-//           $(card_content).html("<a target=_blank' href='"+data_page_url[i]+"'>"+
-//           "<img src='./media/headshots/"+data_pic_url[i]+"' class='row people-image responsive-image center-align' /></a>"+
-//           "<div class='row body-text pt-2 center-align'>Ph.D. Student</div>"+
-//           "<div class='row people-name center-align'><strong>"+data_names[i]+"</strong></div>")
-//         } else {
-//           $(card).addClass('lab-card col-lg-2 col-md-4 col-sm-6 col-12').appendTo($(labs_container));
-//           let card_content = document.createElement('div');
-//           $(card_content).addClass('lab-card-content').appendTo($(card));
-//           $(card_content).html("<a target=_blank' href='"+data_lab_url[i]+"'><div class='lab-title'>"+data_lab[i]+"</div></a>"+
-//           "<a target=_blank' href='"+data_lab_url[i]+"'><img src='./media/headshots/"+data_pic_url[i]+"' class='row responsive-image center-align' /></a>"+
-//           "<div class='row lab-professor-text pt-2 center-align'>"+data_names[i]+"</div>")
-//         }
-//       } 
-// }
+
 
 function load_people() {
   // load people data
@@ -130,7 +85,7 @@ for (let student of students) {
         </a></div>
         <div class="mb-3" style="background-color: #9B2F7A">
             <p style="font-size: 1rem; font-weight: 500 !important; padding: .5rem .5rem 0 .75rem; margin: 0 !important; text-align: left; color: white;">${student.name}</p>
-            <a class="cryptedmail" href="${student.page_url}"><i class='far fa-link' style="font-size:0.6rem"></i> Personal Website</a>
+            <a class="cryptedmail" href="${student.page_url}"><svg xmlns="http://www.w3.org/2000/svg" height="0.6rem" viewBox="0 0 640 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><style>svg{fill:#ffffff}</style><path d="M579.8 267.7c56.5-56.5 56.5-148 0-204.5c-50-50-128.8-56.5-186.3-15.4l-1.6 1.1c-14.4 10.3-17.7 30.3-7.4 44.6s30.3 17.7 44.6 7.4l1.6-1.1c32.1-22.9 76-19.3 103.8 8.6c31.5 31.5 31.5 82.5 0 114L422.3 334.8c-31.5 31.5-82.5 31.5-114 0c-27.9-27.9-31.5-71.8-8.6-103.8l1.1-1.6c10.3-14.4 6.9-34.4-7.4-44.6s-34.4-6.9-44.6 7.4l-1.1 1.6C206.5 251.2 213 330 263 380c56.5 56.5 148 56.5 204.5 0L579.8 267.7zM60.2 244.3c-56.5 56.5-56.5 148 0 204.5c50 50 128.8 56.5 186.3 15.4l1.6-1.1c14.4-10.3 17.7-30.3 7.4-44.6s-30.3-17.7-44.6-7.4l-1.6 1.1c-32.1 22.9-76 19.3-103.8-8.6C74 372 74 321 105.5 289.5L217.7 177.2c31.5-31.5 82.5-31.5 114 0c27.9 27.9 31.5 71.8 8.6 103.9l-1.1 1.6c-10.3 14.4-6.9 34.4 7.4 44.6s34.4 6.9 44.6-7.4l1.1-1.6C433.5 260.8 427 182 377 132c-56.5-56.5-148-56.5-204.5 0L60.2 244.3z"/></svg> Personal Website</a>
         </div>`);
         $(card).find('.mb-3').css('background-color', colors[colorIndex % colors.length]);
         colorIndex++;
@@ -146,66 +101,13 @@ for (let lab of labs) {
         </a></div>
         <div class="mb-3" style="background-color: #9B2F7A">
             <p style="font-size: 1rem; font-weight: 500 !important; padding: .5rem .5rem 0 .75rem; margin: 0 !important; text-align: left; color: white;">${lab.name}</p>
-            <a class="cryptedmail" href="${lab.lab_url}"><i class="far fa-house" style="font-size:0.6rem"></i> ${lab.lab}</a>
+            <a class="cryptedmail" href="${lab.lab_url}"><svg xmlns="http://www.w3.org/2000/svg" height="0.6rem" viewBox="0 0 576 512"><style>svg{fill:#ffffff}</style><path d="M280.37 148.26L96 300.11V464a16 16 0 0 0 16 16l112.06-.29a16 16 0 0 0 15.92-16V368a16 16 0 0 1 16-16h64a16 16 0 0 1 16 16v95.64a16 16 0 0 0 16 16.05L464 480a16 16 0 0 0 16-16V300L295.67 148.26a12.19 12.19 0 0 0-15.3 0zM571.6 251.47L488 182.56V44.05a12 12 0 0 0-12-12h-56a12 12 0 0 0-12 12v72.61L318.47 43a48 48 0 0 0-61 0L4.34 251.47a12 12 0 0 0-1.6 16.9l25.5 31A12 12 0 0 0 45.15 301l235.22-193.74a12.19 12.19 0 0 1 15.3 0L530.9 301a12 12 0 0 0 16.9-1.6l25.5-31a12 12 0 0 0-1.7-16.93z"/></svg> ${lab.lab}</a>
         </div>`);
         $(card).find('.mb-3').css('background-color', colors[colorIndex % colors.length]);
 colorIndex++;
     
 }
 }
-
-
-// function load_publications() {
-//     // load publication data
-//     csvData = $.ajax({
-//         type: "GET",
-//         url: "data/publications.csv",
-//         dataType: "text/csv",
-//         async: false
-//     });   
-
-//     console.log("CSV data: "+ csvData.responseText);
-
-//     // split the data into array of lines of type
-//     const csvLines = csvData.responseText.toString().split(/\r\n|\n/);
-//     data_year = csvLines.map(line => line.split(',')[0])
-//     data_conference = csvLines.map(line => line.split(',')[1])
-//     data_type = csvLines.map(line => line.split(',')[2])
-//     data_title =csvLines.map(line => line.split(',')[3])
-//     data_authors =csvLines.map(line => line.split(',')[4])
-//     data_doi =csvLines.map(line => line.split(',')[6])
-  
-//     console.log("Numbers of publications found: "+ data_year.length);
-  
-//     let publication_container = $("#publication-section").empty()
-//     let p_2023 = document.createElement('div');
-//     let p_2022 = document.createElement('div');
-//     $(p_2023).addClass('row').appendTo($(publication_container));
-//     $(p_2022).addClass('row').appendTo($(publication_container));
-
-//     let year_title_2023 = document.createElement('div');
-//     $(year_title_2023).addClass('row mb-4').appendTo($(p_2023));
-//     $(year_title_2023).html("<strong>2023</strong>")
-
-//     let year_title_2022 = document.createElement('div');
-//     $(year_title_2022).addClass('row mb-4').appendTo($(p_2022));
-//     $(year_title_2022).html("<strong>2022</strong>")
-
-//     for(var i = 1; i < data_title.length; i++)
-//     {
-//         let entry_card = document.createElement('div');
-//         $(entry_card).addClass('row publication-card-content mb-4');
-//         if (data_year[i].indexOf("2022") >= 0) {
-//           $(entry_card).appendTo($(p_2022));
-//         } else {
-//           $(entry_card).appendTo($(p_2023));
-//         }
-
-//         $(entry_card).html("<div class='col-4'><a target=_blank' href='"+data_doi[i]+"'><svg xmlns='http://www.w3.org/2000/svg' height='1em' viewBox='0 0 384 512><path d='M320 464c8.8 0 16-7.2 16-16V160H256c-17.7 0-32-14.3-32-32V48H64c-8.8 0-16 7.2-16 16V448c0 8.8 7.2 16 16 16H320zM0 64C0 28.7 28.7 0 64 0H229.5c17 0 33.3 6.7 45.3 18.7l90.5 90.5c12 12 18.7 28.3 18.7 45.3V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V64z'/></svg></a></div>"+
-//           "<div class='col-15'><div class='row publication-title'>@"+data_conference[i]+" -  <a target=_blank' href='"+data_doi[i]+"'>"+data_title[i]+"</a></div>"+
-//           "<div class='row'>"+data_authors[i].split(':').join(',')+"</div></div><br><br>")
-//     } 
-// }
 
 function load_publications() {
     const csvData = $.ajax({
