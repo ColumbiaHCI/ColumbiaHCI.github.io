@@ -14,7 +14,6 @@ $(document).ready(function () {
     });
 });
 
-
 function load_people() {
   // load people data
   csvData = $.ajax({
@@ -149,7 +148,7 @@ function load_publications() {
             groupedPublications[year][conference].forEach(pub => {
                 const entry_card = $('<div>').addClass('publication-card mb-3').appendTo(conferenceDiv);
                 
-                const linkIcon = "<a target='_blank' href='" + pub.doi + "'><i class='far fa-file'></i></a>";
+                const linkIcon = "<a target='_blank' style='padding-right: 20px' href='" + pub.doi + "'><i class='far fa-file'></i></a>";
 
                 const pubTitle = "<a target='_blank' href='" + pub.doi + "'><b>" + pub.title + "</b></a>";
                 const authors = pub.authors.split(':').join(',');
@@ -169,3 +168,5 @@ function groupByYearAndConference(publications) {
         return acc;
     }, {});
 }
+
+
