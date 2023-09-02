@@ -70,7 +70,7 @@
 }
 
 html {
-	background-color: #3e9dc968
+	/* background-color: #3e9dc968 */
 }
 
 body {
@@ -83,8 +83,8 @@ body {
 	padding: 0 10rem !important;
   z-index: 1;
 }
-footer {
-  background-image: url("/media/header.png");
+/* footer {
+  background-image: url("/media/background-dalle-long.png");
   background-color: #f1f59957;
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -92,11 +92,30 @@ footer {
   padding-left: 50px;
   padding-right: 50px;
   margin: auto;
-    color: black;
-	  padding: 2rem 10rem !important;
-    margin: 2rem;
-    font-weight: 400;
+  color: black;
+  padding: 2rem 10rem !important;
+  margin: 2rem;
+  font-weight: 400;
+} */
+footer {
+  position: relative;
+  padding-left: 50px;
+  padding-right: 50px;
+  color: white;
+  margin: 2rem;
+  font-weight: 400;
+  overflow: hidden; /* Hide the part of the image that exceeds the footer's width */
 }
+
+#footerImage {
+  position: absolute; /* Absolute position inside the footer */
+  right: 0; /* Align to the rightmost side */
+  top: 0; /* Align to the top */
+  height: 100%; /* Match the height of the footer */
+  width: auto; /* Keep the original width but adjust to the height */
+  z-index: -1; /* Position behind the footer's content */
+}
+
 ::-moz-selection {
 	color: #333;
 	background: rgb(221, 221, 221);
@@ -155,55 +174,60 @@ h4 {
 .active {
 	font-weight: 500 !important;
 }
+  
+.navbar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 0px 50px;
+  height: 90px;
+  transition: height 0.3s;
+}
+
+.navbar-toggler {
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.navbar-collapse {
+  flex-grow: 0;
+}
 
 .nav-link {
-    text-transform: uppercase;
-    letter-spacing: .75px;
-    text-align: right;
-	color: black !important;
+  text-transform: uppercase;
+  letter-spacing: .75px;
+  color: black;
   background-color: rgba(255, 255, 255, 0.2);
+  transition: background-color 0.3s;  /* Smooth transition on hover */
 }
-.navbar-nav > li{
-    padding-left: 1.1rem;
+
+.nav-link:hover, .nav-link.active {
+  background-color: rgba(255, 255, 255, 0.5);
 }
+
 .nav-item {
-	padding-left: 0 !important;
+  padding-left: 1.1rem;
+  width: 90%;
 }
-.navbar-toggler {
-	border: none !important;
-	outline: none !important;
-	padding: 0 !important
-  }
+
+/* Mobile-specific styles */
+@media (max-width: 768px) { /* This breakpoint can be adjusted based on your design */
   .navbar {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    padding: 0px 50px;
-    height: 90px;
+      padding: 0px 15px; /* Reduce padding on mobile */
+      height: 70px; /* Reduce height on mobile */
   }
-  .navbar-collapse {
-    flex-grow: 0;
+
+  .nav-item {
+      padding-right: 0.5rem; 
+      text-align: right;;/* Reduce padding for list items on mobile */
   }
-  .nav-title-link {
-    color: black;
-    text-decoration: none;
-  }
-  .nav-title-link:hover {
-    text-decoration: underline;
-  }
-  .nav-link {
-    color: var(--primary-color);
-  }
-  
-  
-  .nav-link.active {
-    text-decoration: underline;
-  }
-  
+}
+
 @media screen and (max-width: 575px) {
 	.padding-row {
 		padding-top: 1rem !important;

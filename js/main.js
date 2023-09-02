@@ -6,7 +6,7 @@ $(document).ready(function () {
     $(window).scroll(function(){
         var distance = $(window).scrollTop();
         $('.section').each(function (i) {
-            if ($(this).position().top <= distance + 250) {
+            if ($(this).position().top <= distance + 50) {
                 $('.navbar-nav a').removeClass('active');
                 $('.navbar-nav a').eq(i).addClass('active');
             }
@@ -170,3 +170,10 @@ function groupByYearAndConference(publications) {
 }
 
 
+
+window.smartlook||(function(d) {
+  var o=smartlook=function(){ o.api.push(arguments)},h=d.getElementsByTagName('head')[0];
+  var c=d.createElement('script');o.api=new Array();c.async=true;c.type='text/javascript';
+  c.charset='utf-8';c.src='https://web-sdk.smartlook.com/recorder.js';h.appendChild(c);
+  })(document);
+  smartlook('init', '09828cf706421904fa1a2ea8eb3e1133703abced', { region: 'eu' });
