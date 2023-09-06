@@ -18,19 +18,17 @@ Welcome to the GitHub repository for the **[🔗 Columbia Human-Computer Interac
 ## Updates & Contributions ✏️
 
 ### 🛠 Editing the Website
-If you'd like to update the website, please make necessary changes to the following files:
+If you'd like to update the website, please only make necessary changes to the following files:
 
 - `data/publications.csv`
 - `data/people.csv`
 
-Ensure that you follow the structure within the CSV files to maintain consistency.
+**⚠️:** Please **avoid** making changes to `index.html`, `main.js`, or any `css` files.
 
 ### 🔍 Before Pushing Changes
-Make sure that the changes you've made are bug-free. Test all your edits before making a push to ensure the website's stability.
+- Ensure that you follow the structure within the CSV files to maintain consistency. 
+- Make sure that the changes you've made are bug-free. Test all your edits before making a push to ensure the website's stability.
 
 ### 📧 Contact Us
-If you have any questions, or require access permissions, please shoot us an email at [hci.columbia@gmail.com](mailto:hci.columbia@gmail.com).
-
-## Social Media 🐦
-
-**Follow us on Twitter:** [@ColumbiaHCI](https://twitter.com/columbiaHCI)
+- If you have any questions, or require access permissions, please email us at [hci.columbia@gmail.com](mailto:hci.columbia@gmail.com).
+- Follow us on Twitter: [@ColumbiaHCI](https://twitter.com/columbiaHCI)
