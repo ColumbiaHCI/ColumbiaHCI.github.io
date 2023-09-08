@@ -1,8 +1,8 @@
 # Columbia Human-Computer Interaction Group Website 
 
-Welcome to the GitHub repository for the **[🔗 Columbia Human-Computer Interaction Group Website](columbiahci.github.io)**. Spearheaded by five labs from the Department of Computer Science and Medical Informatics, our active research group at Columbia University boasts expertise in a myriad of domains. Our labs are led by Lydia B. Chilton, Brian A. Smith, Lena Mamykina, Steven K. Feiner, and Xia Zhou. Presently, our group consists of ~20 PhD students and ~50 MS/Undergraduate students.
+Welcome to the GitHub repository for the **[🔗 Columbia Human-Computer Interaction Group Website](https://columbiahci.github.io)**. We are a vibrant HCI research community led by 5 labs from the Department of Computer Science (Columbia Engineering) and the Department of Biomedical Informatics (Columbia Medical Center). Guided by the expertise of Lydia B. Chilton, Brian A. Smith, Lena Mamykina, Steven K. Feiner, and Xia Zhou, our group dives deep into a plethora of areas: 🎨 design, 🤖 GenAI tools, ♿ accessibility, 🌌 3D UI, 🕶️ VR/AR, 📱 ubiquitous/mobile computing, and 🧬 biomedical informatics. Currently, we're proud to have ~20 PhD students and ~50 MS/Undergraduate students :) 
 
-
+<!-- 
 ### Our Focus Areas 🎯
 - 🎨 *Design*
 - 🤖 *GenAI Tools*
@@ -10,7 +10,7 @@ Welcome to the GitHub repository for the **[🔗 Columbia Human-Computer Interac
 - 🌌 *3D User Interface*
 - 🕶️ *Virtual Reality/Augmented Reality (VR/AR)*
 - 📱 *Ubiquitous/Mobile Computing*
-- 🧬 *Biomedical Informatics*
+- 🧬 *Biomedical Informatics* -->
 
 
 
