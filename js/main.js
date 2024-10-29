@@ -93,12 +93,12 @@ for (let student of students) {
     let card = document.createElement('div');
     $(card).addClass('col-6 col-lg-2 col-sm-4 align-self-center zoom').appendTo(people_container);
     $(card).html(`
-    <div class="rect-img-container"><a href="${student.page_url}">
+    <div class="rect-img-container"><a href="${student.page_url}" target='_blank'>
             <img src="./media/headshots/${student.pic_url}" alt="" style="height: auto; width: 100%;">
         </a></div>
         <div class="mb-3" style="background-color: #9B2F7A">
             <p style="font-size: 1rem; font-weight: 500 !important; padding: .5rem .5rem 0 .75rem; margin: 0 !important; text-align: left; color: white;">${student.name}</p>
-            <a class="cryptedmail" href="${student.page_url}"><svg xmlns="http://www.w3.org/2000/svg" height="0.6rem" viewBox="0 0 640 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><style>svg{fill:#ffffff}</style><path d="M579.8 267.7c56.5-56.5 56.5-148 0-204.5c-50-50-128.8-56.5-186.3-15.4l-1.6 1.1c-14.4 10.3-17.7 30.3-7.4 44.6s30.3 17.7 44.6 7.4l1.6-1.1c32.1-22.9 76-19.3 103.8 8.6c31.5 31.5 31.5 82.5 0 114L422.3 334.8c-31.5 31.5-82.5 31.5-114 0c-27.9-27.9-31.5-71.8-8.6-103.8l1.1-1.6c10.3-14.4 6.9-34.4-7.4-44.6s-34.4-6.9-44.6 7.4l-1.1 1.6C206.5 251.2 213 330 263 380c56.5 56.5 148 56.5 204.5 0L579.8 267.7zM60.2 244.3c-56.5 56.5-56.5 148 0 204.5c50 50 128.8 56.5 186.3 15.4l1.6-1.1c14.4-10.3 17.7-30.3 7.4-44.6s-30.3-17.7-44.6-7.4l-1.6 1.1c-32.1 22.9-76 19.3-103.8-8.6C74 372 74 321 105.5 289.5L217.7 177.2c31.5-31.5 82.5-31.5 114 0c27.9 27.9 31.5 71.8 8.6 103.9l-1.1 1.6c-10.3 14.4-6.9 34.4 7.4 44.6s34.4 6.9 44.6-7.4l1.1-1.6C433.5 260.8 427 182 377 132c-56.5-56.5-148-56.5-204.5 0L60.2 244.3z"/></svg> Personal Website</a>
+            <a class="cryptedmail" href="${student.page_url}" target='_blank'><svg xmlns="http://www.w3.org/2000/svg" height="0.6rem" viewBox="0 0 640 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><style>svg{fill:#ffffff}</style><path d="M579.8 267.7c56.5-56.5 56.5-148 0-204.5c-50-50-128.8-56.5-186.3-15.4l-1.6 1.1c-14.4 10.3-17.7 30.3-7.4 44.6s30.3 17.7 44.6 7.4l1.6-1.1c32.1-22.9 76-19.3 103.8 8.6c31.5 31.5 31.5 82.5 0 114L422.3 334.8c-31.5 31.5-82.5 31.5-114 0c-27.9-27.9-31.5-71.8-8.6-103.8l1.1-1.6c10.3-14.4 6.9-34.4-7.4-44.6s-34.4-6.9-44.6 7.4l-1.1 1.6C206.5 251.2 213 330 263 380c56.5 56.5 148 56.5 204.5 0L579.8 267.7zM60.2 244.3c-56.5 56.5-56.5 148 0 204.5c50 50 128.8 56.5 186.3 15.4l1.6-1.1c14.4-10.3 17.7-30.3 7.4-44.6s-30.3-17.7-44.6-7.4l-1.6 1.1c-32.1 22.9-76 19.3-103.8-8.6C74 372 74 321 105.5 289.5L217.7 177.2c31.5-31.5 82.5-31.5 114 0c27.9 27.9 31.5 71.8 8.6 103.9l-1.1 1.6c-10.3 14.4-6.9 34.4 7.4 44.6s34.4 6.9 44.6-7.4l1.1-1.6C433.5 260.8 427 182 377 132c-56.5-56.5-148-56.5-204.5 0L60.2 244.3z"/></svg> Personal Website</a>
         </div>`);
         $(card).find('.mb-3').css('background-color', colors[colorIndex % colors.length]);
         colorIndex++;
@@ -109,12 +109,12 @@ for (let lab of labs) {
     let card = document.createElement('div');
     $(card).addClass('col-6 col-lg-2 col-sm-4 align-self-center zoom').appendTo(labs_container);
     $(card).html(`
-    <div class="rect-img-container"> <a href="${lab.lab_url}">
+    <div class="rect-img-container"> <a href="${lab.lab_url}" target='_blank'>
             <img src="./media/headshots/${lab.pic_url}" alt="" style="height: auto; width: 100%;">
         </a></div>
         <div class="mb-3" style="background-color: #9B2F7A">
             <p style="font-size: 1rem; font-weight: 500 !important; padding: .5rem .5rem 0 .75rem; margin: 0 !important; text-align: left; color: white;">${lab.name}</p>
-            <a class="cryptedmail" href="${lab.lab_url}"><svg xmlns="http://www.w3.org/2000/svg" height="0.6rem" viewBox="0 0 576 512"><style>svg{fill:#ffffff}</style><path d="M280.37 148.26L96 300.11V464a16 16 0 0 0 16 16l112.06-.29a16 16 0 0 0 15.92-16V368a16 16 0 0 1 16-16h64a16 16 0 0 1 16 16v95.64a16 16 0 0 0 16 16.05L464 480a16 16 0 0 0 16-16V300L295.67 148.26a12.19 12.19 0 0 0-15.3 0zM571.6 251.47L488 182.56V44.05a12 12 0 0 0-12-12h-56a12 12 0 0 0-12 12v72.61L318.47 43a48 48 0 0 0-61 0L4.34 251.47a12 12 0 0 0-1.6 16.9l25.5 31A12 12 0 0 0 45.15 301l235.22-193.74a12.19 12.19 0 0 1 15.3 0L530.9 301a12 12 0 0 0 16.9-1.6l25.5-31a12 12 0 0 0-1.7-16.93z"/></svg> ${lab.lab}</a>
+            <a class="cryptedmail" href="${lab.lab_url}" target='_blank'><svg xmlns="http://www.w3.org/2000/svg" height="0.6rem" viewBox="0 0 576 512"><style>svg{fill:#ffffff}</style><path d="M280.37 148.26L96 300.11V464a16 16 0 0 0 16 16l112.06-.29a16 16 0 0 0 15.92-16V368a16 16 0 0 1 16-16h64a16 16 0 0 1 16 16v95.64a16 16 0 0 0 16 16.05L464 480a16 16 0 0 0 16-16V300L295.67 148.26a12.19 12.19 0 0 0-15.3 0zM571.6 251.47L488 182.56V44.05a12 12 0 0 0-12-12h-56a12 12 0 0 0-12 12v72.61L318.47 43a48 48 0 0 0-61 0L4.34 251.47a12 12 0 0 0-1.6 16.9l25.5 31A12 12 0 0 0 45.15 301l235.22-193.74a12.19 12.19 0 0 1 15.3 0L530.9 301a12 12 0 0 0 16.9-1.6l25.5-31a12 12 0 0 0-1.7-16.93z"/></svg> ${lab.lab}</a>
         </div>`);
         $(card).find('.mb-3').css('background-color', colors[colorIndex % colors.length]);
 colorIndex++;
