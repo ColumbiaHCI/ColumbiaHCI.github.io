@@ -12,6 +12,20 @@ $(document).ready(function () {
             }
         });
     });
+
+    // Uncollapse all sections when a user starts searching with Ctrl+F
+    $(window).on('keydown', function(event) {
+        if ((event.ctrlKey || event.metaKey) && event.key === 'f') {
+            $('.year-content').each(function() {
+                const yearContent = $(this);
+                const arrow = yearContent.siblings('.year-header').find('.arrow');
+                if (!yearContent.is(':visible')) {
+                    yearContent.show();
+                    arrow.html('&#9660;');
+                }
+            });
+        }
+    });
 });
 
 function load_people() {
@@ -31,7 +45,7 @@ function load_people() {
   let students = [];
   let labs = [];
 
-  let colors = ['#9B2F7A', '#379DD4', '#61BA84', '#E1B917'];
+  let colors = ['#9B2F7A', '#379DD4', '#61BA84', '#E1B917', '#003865'];
 
 // Shuffle function to shuffle the colors array
 function shuffle(array) {
@@ -136,11 +150,31 @@ function load_publications() {
     // Extract distinct years and sort in descending order
     const sortedYears = Object.keys(groupedPublications).sort((a, b) => b - a);
 
+    const currentYear = new Date().getFullYear();
+
     // Use sortedYears for iteration
     for (const year of sortedYears) {
-        const yearDiv = $('<div>').addClass('row mb-4').appendTo(publication_container);
-        const conferenceContainer = $('<div>').appendTo(yearDiv);  // New container for conferences
+        const publicationCount = Object.values(groupedPublications[year]).reduce((sum, confPubs) => sum + confPubs.length, 0);
+        const yearDiv = $('<div>').addClass('year-section').css('width', '100%').appendTo(publication_container);
+        const yearHeader = $(`<div class="year-header" style="cursor: pointer; margin-bottom: 10px; font-weight: bold;">
+                                <span class="arrow">&#9654;</span> ${year} (${publicationCount})
+                             </div>`).appendTo(yearDiv);
+        
+        const yearContent = $('<div>').addClass('year-content').appendTo(yearDiv);
+        
+        // Only show the current year's content by default, hide others
+        if (parseInt(year) === currentYear) {
+            yearContent.show();
+            yearHeader.find('.arrow').html('&#9660;'); // Change arrow to down for expanded content
+        } else {
+            yearContent.hide();
+        }
+
+        yearHeader.on('click', function() {
+            toggleYearContent(yearContent, $(this).find('.arrow'));
+        });
     
+        const conferenceContainer = $('<div>').appendTo(yearContent);  // New container for conferences
         for (const conference in groupedPublications[year]) {
             const conferenceDiv = $('<div>').addClass('conference mb-3').appendTo(conferenceContainer);  // Appending to conferenceContainer now
             $('<h4>').text(conference).appendTo(conferenceDiv);
@@ -169,6 +203,15 @@ function groupByYearAndConference(publications) {
     }, {});
 }
 
+function toggleYearContent(yearContent, arrowElement) {
+    if (yearContent.is(':visible')) {
+        yearContent.slideUp();
+        arrowElement.html('&#9654;'); // Change arrow to right for collapsed content
+    } else {
+        yearContent.slideDown();
+        arrowElement.html('&#9660;'); // Change arrow to down for expanded content
+    }
+}
 
 
 window.smartlook||(function(d) {

@@ -24,7 +24,6 @@
   top: 0!important;
   right: 0!important; 
   transform: translateX(+38%);
-  /* background: linear-gradient(#7e7cb5, #91b1a2); */
   z-index: 0;
   opacity: 0.6;
 }
@@ -52,16 +51,15 @@
 
 .row{
   width: 100%!important;
-  /* margin-left: 3%; */
-  /* padding-left: 15px!important; */
 }
-
 
 .row.mb-4{
   display: block;
 }
+
 .wrapper{
-  margin-left:5%;
+  margin-left:15px;
+  margin-right:15px;
 }
 
 .cryptedmail {
@@ -71,10 +69,6 @@
   margin: 0 !important;
   color: white !important;
   display: inline-block;
-}
-
-html {
-	/* background-color: #3e9dc968 */
 }
 
 body {
