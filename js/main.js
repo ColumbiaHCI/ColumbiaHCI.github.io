@@ -27,7 +27,18 @@ $(document).ready(function () {
             });
         }
     });
+
+    document.addEventListener("DOMContentLoaded", function() {
+        showSemester();
+    });
 });
+
+function showSemester() {
+    var selectedSemester = document.getElementById("semesterSelect").value;
+    document.getElementById("fall2024").style.display = "none";
+    document.getElementById("spring2025").style.display = "none";
+    document.getElementById(selectedSemester).style.display = "block";
+}
 
 function load_people() {
     console.log("Loading people data..")

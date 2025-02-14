@@ -140,32 +140,31 @@
 
         <div class="row">
           <div class="col-12">
-            <h4 class="font-weight-bold mb-3">HCI Seminar Fall 2024:</h4>
-            <div class="d-flex flex-wrap">
-              <div class="mb-4" style="min-width: 100px; flex: 1 1 100%;">
-                <div class="mb-1">
-                  <p><a href="https://yuejiang-nj.github.io/" target="_blank">10/18 - Yue Jiang</a>: "Effective Computational Representations for AI-Assisted Design"</p>
-                </div>
-                <div class="mb-1">
-                  <p><a href="https://tuhinjubcse.github.io/" target="_blank">10/25 - Tuhin Chakrabarty</a>: "Can AI writing be salvaged? Mitigating Idiosyncrasies and Improving Human-AI Alignment in the Writing Process through Edits"</p>
-                </div>
-                <div class="mb-1">
-                  <p><a href="https://scholar.harvard.edu/zilinma/home" target="_blank">11/1 - Zilin Ma</a>: “Would you come out to ChatGPT?”: Applying Socio-technical Lens on LLM-based Chatbots for Mental Health Support</p>
-                </div>
-                <div class="mb-1">
-                  <p><a href="https://me.berkeley.edu/people/kosa-goucher-lambert/" target="_blank">11/8 - Kosa Goucher-Lambert</a>: “Inspiring Design: Intersecting Techniques Can Enable a New Era of Engineering Design”</p>
-                </div>
-                <div class="mb-1">
-                  <p><a href="https://hua-shen.org/" target="_blank">11/15 - Hua Shen</a>: “Towards Bidirectional Human-AI Alignment via Interaction: Human-Centered AI Explanation, Evaluation, and Development”</p>
-                </div>
-                <div class="mb-1">
-                  <p><a href="https://www.linkedin.com/in/sruti-srinidhi" target="_blank">11/22 - Sruti Srinidhi</a>: “Can LLMs Augment Physical Intelligence: Exploring cognitive assistants for the physical world”</p>
-                </div>
-                <div class="mb-1">
-                  <p><a href="https://www.ishwarya.me/" target="_blank">12/06 - Ishwarya Ananthabhotla</a>: “Building Virtual Spaces with Realistic Sound”</p>
-                </div>
-              </div>
+            
+            <label for="semesterSelect" class="form-label">Select Semester:</label>
+            <select id="semesterSelect" class="form-select mb-3 border-primary text-primary" style="border-radius: 10px;" onchange="showSemester()">
+                <option value="spring2025" selected>Spring 2025</option>
+                <option value="fall2024">Fall 2024</option>
+            </select>
+            
+            <div id="fall2024" style="display: none;">
+                <ul class="list-unstyled">
+                    <li><a href="https://yuejiang-nj.github.io/" target="_blank"><b>10/18 - Yue Jiang</b></a>: "Effective Computational Representations for AI-Assisted Design"</li>
+                    <li><a href="https://tuhinjubcse.github.io/" target="_blank"><b>10/25 - Tuhin Chakrabarty</b></a>: "Can AI writing be salvaged? Mitigating Idiosyncrasies and Improving Human-AI Alignment in the Writing Process through Edits"</li>
+                    <li><a href="https://scholar.harvard.edu/zilinma/home" target="_blank"><b>11/1 - Zilin Ma</b></a>: "Would you come out to ChatGPT? Applying Socio-technical Lens on LLM-based Chatbots for Mental Health Support"</li>
+                    <li><a href="https://me.berkeley.edu/people/kosa-goucher-lambert/" target="_blank"><b>11/8 - Kosa Goucher-Lambert</b></a>: "Inspiring Design: Intersecting Techniques Can Enable a New Era of Engineering Design"</li>
+                    <li><a href="https://hua-shen.org/" target="_blank"><b>11/15 - Hua Shen</b></a>: "Towards Bidirectional Human-AI Alignment via Interaction: Human-Centered AI Explanation, Evaluation, and Development"</li>
+                    <li><a href="https://www.linkedin.com/in/sruti-srinidhi" target="_blank"><b>11/22 - Sruti Srinidhi</b></a>: "Can LLMs Augment Physical Intelligence: Exploring cognitive assistants for the physical world"</li>
+                    <li><a href="https://www.ishwarya.me/" target="_blank"><b>12/06 - Ishwarya Ananthabhotla</b></a>: "Building Virtual Spaces with Realistic Sound"</li>
+                </ul>
             </div>
+            
+            <div id="spring2025">
+              <ul class="list-unstyled">
+                <li><a href="https://renkaima.xyz/" target="_blank"><b>2/14 - Renkai Ma</b></a>: "Building Trust and Safety on Content Creation Platforms"</li>
+            </ul>
+            </div>
+
             <div class="card shadow-sm mb-4 text-white" style="background-color:#379DD4; min-width: 100px;">
               <div class="card-body">
                 <h4 class="font-weight-bold mb-3">Interested in Hosting or Speaking?</h4>
@@ -176,6 +175,7 @@
                 </ul>
               </div>
             </div>
+
           </div>
         </div>
         
