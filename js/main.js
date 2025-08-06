@@ -1,7 +1,12 @@
+// Global variables for seminar data
+let seminarsData = {};
+let currentSemester = '';
+
 $(document).ready(function () {
     load_people();
     load_publications();
     load_alumni();
+    loadSeminarsFromCSV(); // Load seminar data
 
     // update elements on scroll
     $(window).scroll(function () {
@@ -33,11 +38,164 @@ $(document).ready(function () {
     });
 });
 
+// Seminar-related functions
+function loadSeminarsFromCSV() {
+    console.log("Loading seminars data..")
+    // You can change this path to where your CSV file is located
+    const csvPath = 'data/seminars.csv';
+    
+    Papa.parse(csvPath, {
+        download: true,
+        header: true,
+        skipEmptyLines: true,
+        complete: function(results) {
+            if (results.errors.length > 0) {
+                console.error('CSV parsing errors:', results.errors);
+                showSeminarError('Error parsing CSV file. Please check the file format.');
+                return;
+            }
+            
+            processSeminarsData(results.data);
+            populateSemesterDropdown();
+            showSemester();
+        },
+        error: function(error) {
+            console.error('Error loading CSV:', error);
+            showSeminarError('Error loading seminar data. Please make sure the CSV file exists at: ' + csvPath);
+        }
+    });
+}
+
+function processSeminarsData(data) {
+    seminarsData = {};
+    
+    data.forEach(row => {
+        // Trim whitespace from all fields
+        Object.keys(row).forEach(key => {
+            if (typeof row[key] === 'string') {
+                row[key] = row[key].trim();
+            }
+        });
+        
+        const semester = row.semester;
+        if (!semester) return; // Skip rows without semester
+        
+        if (!seminarsData[semester]) {
+            seminarsData[semester] = [];
+        }
+        
+        seminarsData[semester].push({
+            date: row.date || '',
+            name: row.name || '',
+            url: row.url || '',
+            title: row.title || '',
+            description: row.description || ''
+        });
+    });
+    
+    // Sort seminars by date within each semester
+    Object.keys(seminarsData).forEach(semester => {
+        seminarsData[semester].sort((a, b) => {
+            if (a.date && b.date) {
+                return new Date(a.date) - new Date(b.date);
+            }
+            return 0;
+        });
+    });
+}
+
+function populateSemesterDropdown() {
+    const select = document.getElementById('semesterSelect');
+    if (!select) return; // Element doesn't exist yet
+    
+    select.innerHTML = '';
+    
+    const semesters = Object.keys(seminarsData);
+    if (semesters.length === 0) {
+        showSeminarError('No seminar data found in CSV file.');
+        return;
+    }
+    
+    // Sort semesters (you can customize this sorting logic)
+    semesters.sort().reverse(); // Most recent first
+    
+    semesters.forEach((semester, index) => {
+        const option = document.createElement('option');
+        option.value = semester;
+        option.textContent = formatSemesterName(semester);
+        if (index === 0) {
+            option.selected = true;
+            currentSemester = semester;
+        }
+        select.appendChild(option);
+    });
+}
+
+function formatSemesterName(semester) {
+    // Convert "spring2025" to "Spring 2025", etc.
+    const parts = semester.match(/([a-zA-Z]+)(\d+)/);
+    if (parts) {
+        const season = parts[1].charAt(0).toUpperCase() + parts[1].slice(1);
+        const year = parts[2];
+        return `${season} ${year}`;
+    }
+    return semester;
+}
+
 function showSemester() {
     var selectedSemester = document.getElementById("semesterSelect").value;
     document.getElementById("fall2024").style.display = "none";
     document.getElementById("spring2025").style.display = "none";
     document.getElementById(selectedSemester).style.display = "block";
+    
+    // Also handle CSV-based display
+    const select = document.getElementById('semesterSelect');
+    const container = document.getElementById('seminarsContainer');
+    
+    if (!select || !container) return; // Elements don't exist yet
+    
+    const selectedSemesterCSV = select.value || currentSemester;
+    currentSemester = selectedSemesterCSV;
+    
+    if (!seminarsData[selectedSemesterCSV]) {
+        container.innerHTML = '<div class="error">No data found for selected semester.</div>';
+        return;
+    }
+    
+    const seminars = seminarsData[selectedSemesterCSV];
+    let html = '<ul class="list-unstyled">';
+    
+    seminars.forEach(seminar => {
+        html += '<li>';
+        
+        if (seminar.url && seminar.name) {
+            html += `<a href="${seminar.url}" target="_blank"><b>${seminar.date} - ${seminar.name}</b></a>`;
+        } else if (seminar.name) {
+            html += `<b>${seminar.date} - ${seminar.name}</b>`;
+        } else {
+            html += `<b>${seminar.date}</b>`;
+        }
+        
+        if (seminar.title) {
+            html += `: "${seminar.title}"`;
+        }
+        
+        if (seminar.description) {
+            html += ` - ${seminar.description}`;
+        }
+        
+        html += '</li>';
+    });
+    
+    html += '</ul>';
+    container.innerHTML = html;
+}
+
+function showSeminarError(message) {
+    const container = document.getElementById('seminarsContainer');
+    if (container) {
+        container.innerHTML = `<div class="error">${message}</div>`;
+    }
 }
 
 function load_people() {
@@ -287,11 +445,3 @@ function toggleYearContent(yearContent, arrowElement) {
         arrowElement.html('&#9660;'); // Change arrow to down for expanded content
     }
 }
-
-
-window.smartlook || (function (d) {
-    var o = smartlook = function () { o.api.push(arguments) }, h = d.getElementsByTagName('head')[0];
-    var c = d.createElement('script'); o.api = new Array(); c.async = true; c.type = 'text/javascript';
-    c.charset = 'utf-8'; c.src = 'https://web-sdk.smartlook.com/recorder.js'; h.appendChild(c);
-})(document);
-smartlook('init', '09828cf706421904fa1a2ea8eb3e1133703abced', { region: 'eu' });

@@ -37,6 +37,9 @@
   <!-- <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/themes/smoothness/jquery-ui.css"> -->
   <!-- <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script> -->
 
+  <!-- PapaParse for CSV parsing -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+
   <!-- <link rel="stylesheet" href="css/typo.css"> -->
   <link rel="stylesheet" href="css/style.css">
   <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script> -->
@@ -143,26 +146,10 @@
             
             <label for="semesterSelect" class="form-label">Select Semester:</label>
             <select id="semesterSelect" class="form-select mb-3 border-primary text-primary" style="border-radius: 10px;" onchange="showSemester()">
-                <option value="spring2025" selected>Spring 2025</option>
-                <option value="fall2024">Fall 2024</option>
             </select>
             
-            <div id="fall2024" style="display: none;">
-                <ul class="list-unstyled">
-                    <li><a href="https://yuejiang-nj.github.io/" target="_blank"><b>10/18 - Yue Jiang</b></a>: "Effective Computational Representations for AI-Assisted Design"</li>
-                    <li><a href="https://tuhinjubcse.github.io/" target="_blank"><b>10/25 - Tuhin Chakrabarty</b></a>: "Can AI writing be salvaged? Mitigating Idiosyncrasies and Improving Human-AI Alignment in the Writing Process through Edits"</li>
-                    <li><a href="https://scholar.harvard.edu/zilinma/home" target="_blank"><b>11/1 - Zilin Ma</b></a>: "Would you come out to ChatGPT? Applying Socio-technical Lens on LLM-based Chatbots for Mental Health Support"</li>
-                    <li><a href="https://me.berkeley.edu/people/kosa-goucher-lambert/" target="_blank"><b>11/8 - Kosa Goucher-Lambert</b></a>: "Inspiring Design: Intersecting Techniques Can Enable a New Era of Engineering Design"</li>
-                    <li><a href="https://hua-shen.org/" target="_blank"><b>11/15 - Hua Shen</b></a>: "Towards Bidirectional Human-AI Alignment via Interaction: Human-Centered AI Explanation, Evaluation, and Development"</li>
-                    <li><a href="https://www.linkedin.com/in/sruti-srinidhi" target="_blank"><b>11/22 - Sruti Srinidhi</b></a>: "Can LLMs Augment Physical Intelligence: Exploring cognitive assistants for the physical world"</li>
-                    <li><a href="https://www.ishwarya.me/" target="_blank"><b>12/06 - Ishwarya Ananthabhotla</b></a>: "Building Virtual Spaces with Realistic Sound"</li>
-                </ul>
-            </div>
-            
-            <div id="spring2025">
-              <ul class="list-unstyled">
-                <li><a href="https://renkaima.xyz/" target="_blank"><b>2/14 - Renkai Ma</b></a>: "Building Trust and Safety on Content Creation Platforms"</li>
-            </ul>
+            <div id="seminarsContainer">
+              <div class="loading">Loading seminar data...</div>
             </div>
 
             <div class="card shadow-sm mb-4 text-white" style="background-color:#379DD4; min-width: 100px;">
@@ -218,5 +205,4 @@
     </div>
 
   </footer>
-
 </html>
