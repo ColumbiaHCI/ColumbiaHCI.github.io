@@ -248,18 +248,30 @@ h4 {
   display: flex;
   align-items: center;
   border-bottom: 1px solid #ddd;
-  padding: 5px 0;
+  padding: 15px 5px;
+  gap: 20px;
+}
+
+.publication-card:hover {
+  background-color: var(--tertiary-color);
+  transition: all;
+  transition-duration: 400ms;
 }
 
 .publication-card .icon {
   flex: 0 0 10px;
-  padding-right: 10px;
+  font-size: 25px;
+  margin: auto;
 }
 
 .publication-card .details {
   flex: 1;
   margin-top: -.4rem;
   padding-bottom: 0.15rem;
+}
+
+.pub-title {
+  font-size: 20px;
 }
 
 .conference h4 {
@@ -272,6 +284,14 @@ h4 {
   width: 100% !important;
 }
 
+.form-select {
+  width: fit-content;
+  padding: 4px;
+}
+
+.form-select:hover {
+  background-color: var(--tertiary-color);
+}
 
 @media screen and (max-width: 1200px) {
 	.page-content {
