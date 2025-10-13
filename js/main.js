@@ -495,7 +495,7 @@ renderPublications(publications) {
         
         semesters.forEach((semester, index) => {
             const option = $('<option>').val(semester).text(Utils.formatSemesterName(semester));
-            if (index === 0) {
+            if (semester === 'fall2025') {  // Replace with your desired semester
                 option.prop('selected', true);
                 STATE.currentSemester = semester;
             }
