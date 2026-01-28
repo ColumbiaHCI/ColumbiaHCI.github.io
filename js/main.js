@@ -18,7 +18,7 @@ const CONFIG = {
         labs: '#about-labs',
         alumni: '#alumni-section',
         publications: '#publication-section',
-        semesterSelect: '#semesterSelect',
+        semesterTabs: '#semesterTabs',
         seminarsContainer: '#seminarsContainer'
     }
 };
@@ -86,7 +86,9 @@ const Utils = {
                 </a>
             </div>
             <div class="mb-3" style="background-color: ${color}">
-                <p style="font-size: 1rem; font-weight: 500 !important; padding: .5rem .5rem 0 .75rem; margin: 0 !important; text-align: left; color: white;">${displayName}</p>
+                <a href="${url}" target="_blank" style="display: inline-block;">
+                    <p style="font-size: 1rem; font-weight: 500 !important; padding: .5rem .5rem 0 .75rem; margin: 0 !important; text-align: left; color: white;">${displayName}</p>
+                </a>
                 <a class="cryptedmail" href="${url}" target='_blank'>${iconSvg} ${linkLabel}</a>
             </div>
         `;
@@ -114,6 +116,26 @@ const Utils = {
             return `${season} ${year}`;
         }
         return semester;
+    },
+
+    /**
+     * Compare semesters like "spring2025"/"fall2024" chronologically.
+     * Returns positive if a > b.
+     */
+    compareSemesters(a, b) {
+        const parse = (s) => {
+            const match = (s || '').trim().toLowerCase().match(/^(spring|summer|fall|winter)(\d{4})$/);
+            if (!match) return { year: -1, seasonOrder: -1 };
+            const season = match[1];
+            const year = parseInt(match[2], 10);
+            const seasonOrderMap = { winter: 0, spring: 1, summer: 2, fall: 3 };
+            return { year, seasonOrder: seasonOrderMap[season] ?? -1 };
+        };
+
+        const pa = parse(a);
+        const pb = parse(b);
+        if (pa.year !== pb.year) return pa.year - pb.year;
+        return pa.seasonOrder - pb.seasonOrder;
     }
 };
 
@@ -245,8 +267,8 @@ const DataLoaders = {
         alumni.forEach(alumn => {
             const card = $('<div>');
             const content = alumn.page
-                ? `<a href="${alumn.page}" target='_blank'><p style="font-size: 0.5rem; font-weight: 300 !important; padding: .1rem .3rem; margin: 0 !important; text-align: left;"><u>${alumn.name}</u> (${alumn.year} - ${alumn.title})</p></a>`
-                : `<p style="font-size: 0.5rem; font-weight: 300 !important; padding: .1rem .3rem; margin: 0 !important; text-align: left; color: black;">${alumn.name} (${alumn.year} - ${alumn.title})</p>`;
+                ? `<a href="${alumn.page}" target='_blank'><p style="font-size: 0.85rem; font-weight: 300 !important; padding: .2rem .3rem; margin: 0 !important; text-align: left;"><u>${alumn.name}</u> (${alumn.year} - ${alumn.title})</p></a>`
+                : `<p style="font-size: 0.85rem; font-weight: 300 !important; padding: .2rem .3rem; margin: 0 !important; text-align: left; color: black;">${alumn.name} (${alumn.year} - ${alumn.title})</p>`;
             
             card.html(content).appendTo(container);
         });
@@ -417,14 +439,28 @@ renderPublications(publications) {
                 }
                 
                 this.processSeminarsData(results.data);
-                this.populateSemesterDropdown();
-                this.showSemester();
+                this.renderSemesterTabs();
+                // Default to Spring 2025 if present, otherwise pick the most recent semester.
+                this.setSemester(this.getDefaultSemester());
             },
             error: (error) => {
                 console.error('Error loading CSV:', error);
                 Utils.showError(CONFIG.elements.seminarsContainer, 'Error loading seminar data');
             }
         });
+    },
+
+    /**
+     * Return the default semester to show on load.
+     */
+    getDefaultSemester() {
+        const semesters = Object.keys(STATE.seminarsData);
+        if (semesters.includes('spring2026')) return 'spring2026';
+        if (semesters.includes('spring2025')) return 'spring2025';
+        if (semesters.length === 0) return '';
+
+        // Most recent semester by chronological compare
+        return semesters.sort(Utils.compareSemesters).at(-1);
     },
 
     /**
@@ -473,50 +509,76 @@ renderPublications(publications) {
     },
 
     /**
-     * Populate semester dropdown
+     * Render semester tabs
      */
-    populateSemesterDropdown() {
-        const select = $(CONFIG.elements.semesterSelect);
-        if (!select.length) {
-            console.error('Semester select element not found');
+    renderSemesterTabs() {
+        const tabs = $(CONFIG.elements.semesterTabs);
+        if (!tabs.length) {
+            console.error('Semester tabs container not found');
             return;
         }
-        
-        select.empty();
-        
+
+        tabs.empty();
+
         const semesters = Object.keys(STATE.seminarsData);
         if (semesters.length === 0) {
             Utils.showError(CONFIG.elements.seminarsContainer, 'No seminar data found');
             return;
         }
-        
-        // Sort semesters (most recent first)
-        semesters.sort().reverse();
-        
-        semesters.forEach((semester, index) => {
-            const option = $('<option>').val(semester).text(Utils.formatSemesterName(semester));
-            if (semester === 'fall2025') {  // Replace with your desired semester
-                option.prop('selected', true);
-                STATE.currentSemester = semester;
-            }
-            select.append(option);
+
+        // Sort semesters oldest -> newest, then display newest -> oldest (left to right)
+        const sorted = semesters.sort(Utils.compareSemesters).reverse();
+
+        sorted.forEach((semester) => {
+            const label = Utils.formatSemesterName(semester);
+            const btn = $('<button>')
+                .addClass('semester-tab')
+                .attr('type', 'button')
+                .attr('role', 'tab')
+                .attr('data-semester', semester)
+                .attr('aria-selected', 'false')
+                .text(label)
+                .on('click', () => this.setSemester(semester));
+
+            tabs.append(btn);
         });
+    },
+
+    /**
+     * Set current semester and update UI
+     */
+    setSemester(semester) {
+        if (!semester) return;
+        STATE.currentSemester = semester;
+
+        // Update active tab styles + aria
+        const tabs = $(CONFIG.elements.semesterTabs);
+        tabs.find('.semester-tab').each(function () {
+            const $btn = $(this);
+            const isActive = $btn.data('semester') === semester;
+            $btn.toggleClass('active', isActive);
+            $btn.attr('aria-selected', isActive ? 'true' : 'false');
+        });
+
+        this.showSemester(semester);
     },
 
     /**
      * Display selected semester's seminars
      */
-    showSemester() {
-        const select = $(CONFIG.elements.semesterSelect);
+    showSemester(semesterOverride) {
         const container = $(CONFIG.elements.seminarsContainer);
         
-        if (!select.length || !container.length) {
+        if (!container.length) {
             console.error('Required seminar elements not found');
             return;
         }
         
-        const selectedSemester = select.val() || STATE.currentSemester;
-        STATE.currentSemester = selectedSemester;
+        const selectedSemester = semesterOverride || STATE.currentSemester;
+        if (!selectedSemester) {
+            Utils.showError(CONFIG.elements.seminarsContainer, 'No semester selected');
+            return;
+        }
         
         // Hide hardcoded semester divs if they exist
         $('#fall2024, #spring2025').hide();
@@ -594,14 +656,7 @@ const EventHandlers = {
         });
     },
 
-    /**
-     * Initialize semester selection handler
-     */
-    initSemesterSelection() {
-        $(document).on('change', CONFIG.elements.semesterSelect, () => {
-            DataLoaders.showSemester();
-        });
-    }
+    // No longer needed: semester selection is handled by tab click events.
 };
 
 /**
@@ -613,7 +668,6 @@ $(document).ready(function () {
     // Initialize event handlers
     EventHandlers.initScrollNavigation();
     EventHandlers.initSearchExpansion();
-    EventHandlers.initSemesterSelection();
     
     // Load all data
     DataLoaders.loadPeople();

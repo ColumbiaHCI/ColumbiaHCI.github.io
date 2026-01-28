@@ -293,6 +293,56 @@ h4 {
   background-color: var(--tertiary-color);
 }
 
+/* Seminars: Semester tabs (replaces dropdown) */
+.semester-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  border-bottom: 1px solid rgba(0, 56, 101, 0.25); /* Columbia blue tint */
+  padding-bottom: 6px;
+}
+
+.semester-tab {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  padding: 6px 2px;
+  color: #003865;
+  font-weight: 400;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  position: relative;
+}
+
+.semester-tab:hover {
+  font-weight: 500;
+}
+
+.semester-tab:focus {
+  outline: none;
+}
+
+.semester-tab:focus-visible {
+  outline: 2px solid rgba(55, 157, 212, 0.6);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+.semester-tab.active {
+  font-weight: 600;
+}
+
+.semester-tab.active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -7px;
+  height: 3px;
+  background: #379DD4;
+  border-radius: 999px;
+}
+
 @media screen and (max-width: 1200px) {
 	.page-content {
 		padding: 0 5rem !important;

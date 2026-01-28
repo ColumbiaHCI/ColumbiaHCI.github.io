@@ -143,10 +143,11 @@
 
         <div class="row">
           <div class="col-12">
-            
-            <label for="semesterSelect" class="form-label">Select Semester:</label>
-            <select id="semesterSelect" class="form-select mb-3 border-primary text-primary" style="border-radius: 10px;" onchange="showSemester()">
-            </select>
+
+            <div class="d-flex align-items-center justify-content-between flex-wrap">
+              <!-- <p class="mb-2" style="font-weight: 500;">Select Semester:</p> -->
+            </div>
+            <div id="semesterTabs" class="semester-tabs mb-3" role="tablist" aria-label="Select semester"></div>
             
             <div id="seminarsContainer">
               <div class="loading">Loading seminar data...</div>
@@ -155,10 +156,10 @@
             <div class="card shadow-sm mb-4 text-white" style="background-color:#379DD4; min-width: 100px;">
               <div class="card-body">
                 <h4 class="font-weight-bold mb-3">Interested in Hosting or Speaking?</h4>
-                <p>If you are interested in hosting a speaker or presenting at the HCI seminar, please get in touch with the Columbia HCI group organizers. In Fall 2024, the seminars take place on Fridays from 4 to 5 p.m. on the Columbia University Morningside campus and on Zoom, beginning with time for socializing, followed by a 40-50 minute talk and a Q&A session.</p>
+                <p>If you are interested in hosting a speaker or presenting at the HCI seminar, please get in touch with the Columbia HCI group organizers (<a href="https://iamtaolong.github.io/" class="text-white" target="_blank" rel="noopener noreferrer"><u>Tao Long</u></a> &amp; <a href="https://www.cs.columbia.edu/~bschlager/" class="text-white" target="_blank" rel="noopener noreferrer"><u>Bettina Schlager</u></a>). In Spring 2026, the seminars take place on Wednesdays from 12 to 1 p.m. on the Columbia University Morningside campus and on Zoom, beginning with time for socializing, followed by a 40-50 minute talk and a Q&amp;A session.</p>
                 <ul class="list-unstyled mt-4">
-                  <li><a href="mailto:hci.columbia@gmail.com" class="text-white font-weight-bold" target="_blank">Interested in giving a talk?</a></li>
-                  <li><a href="https://lists.cs.columbia.edu/mailman/listinfo/hci" class="text-white font-weight-bold" target="_blank">Join the HCI Mailing List</a></li>
+                  <li><a href="mailto:hci.columbia@gmail.com" class="text-white font-weight-bold" target="_blank" rel="noopener noreferrer">Interested in giving a talk?</a></li>
+                  <li><a href="https://lists.cs.columbia.edu/mailman/listinfo/hci" class="text-white font-weight-bold" target="_blank" rel="noopener noreferrer">Join the HCI Mailing List</a></li>
                 </ul>
               </div>
             </div>
