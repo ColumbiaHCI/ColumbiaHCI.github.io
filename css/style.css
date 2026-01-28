@@ -71,6 +71,42 @@
   display: inline-block;
 }
 
+/* People cards: consistent name row + link rows */
+.person-card-footer {
+  padding: 0.5rem 0.75rem 0.75rem 0.75rem;
+}
+
+.person-name-row {
+  margin-bottom: 0.35rem;
+}
+
+.person-name-link {
+  color: white !important;
+  font-size: 1rem;
+  font-weight: 600 !important;
+  display: block;
+  line-height: 1.2;
+}
+
+.person-links-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-height: 2.4em; /* keep faculty cards consistent even with short lab names */
+}
+
+.person-link {
+  color: rgba(255, 255, 255, 0.95) !important;
+  font-size: 0.8rem;
+  font-weight: 300 !important;
+  display: block;
+  line-height: 1.2;
+}
+
+.person-link svg {
+  margin-right: 0.2rem;
+}
+
 body {
 	font-size: 1rem;
 	line-height: 1.7;
@@ -271,7 +307,12 @@ h4 {
 }
 
 .pub-title {
-  font-size: 20px;
+  font-size: 18px;
+}
+
+/* Publications: slightly smaller overall typography */
+.publication-card .details {
+  font-size: 0.95rem;
 }
 
 .conference h4 {

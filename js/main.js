@@ -80,17 +80,30 @@ const Utils = {
         const displayName = person.name;
         const linkLabel = person.lab || linkText;
 
+        const hasLabLink = Boolean(person.lab_url && person.lab);
+
+        // Faculty: show only the lab name link (as requested)
+        const linksHtml = linkIcon === 'home'
+            ? `
+                ${hasLabLink ? `<a class="person-link" href="${person.lab_url}" target="_blank" rel="noopener noreferrer">${iconSvg} ${person.lab}</a>` : ''}
+              `
+            : `
+                <a class="person-link" href="${url}" target="_blank" rel="noopener noreferrer">${iconSvg} ${linkLabel}</a>
+              `;
+
         return `
             <div class="rect-img-container">
-                <a href="${url}" target='_blank'>
+                <a href="${url}" target="_blank" rel="noopener noreferrer">
                     <img src="${CONFIG.paths.headshots}${person.pic_url}" alt="${displayName}" style="height: auto; width: 100%;">
                 </a>
             </div>
-            <div class="mb-3" style="background-color: ${color}">
-                <a href="${url}" target="_blank" style="display: inline-block;">
-                    <p style="font-size: 1rem; font-weight: 500 !important; padding: .5rem .5rem 0 .75rem; margin: 0 !important; text-align: left; color: white;">${displayName}</p>
-                </a>
-                <a class="cryptedmail" href="${url}" target='_blank'>${iconSvg} ${linkLabel}</a>
+            <div class="person-card-footer" style="background-color: ${color}">
+                <div class="person-name-row">
+                    <a href="${url}" target="_blank" rel="noopener noreferrer" class="person-name-link">${displayName}</a>
+                </div>
+                <div class="person-links-row">
+                    ${linksHtml}
+                </div>
             </div>
         `;
     },
@@ -206,7 +219,7 @@ const DataLoaders = {
 
         // Render student cards
         students.forEach(student => {
-            const card = $('<div>').addClass('col-6 col-lg-2 col-sm-4 align-self-center zoom');
+            const card = $('<div>').addClass('col-6 col-lg-2 col-sm-4 align-self-center zoom mb-4');
             const color = STATE.colors[colorIndex % STATE.colors.length];
             card.html(Utils.createPersonCard(student, color));
             card.appendTo(peopleContainer);
@@ -215,7 +228,7 @@ const DataLoaders = {
 
         // Render lab cards
         labs.forEach(lab => {
-            const card = $('<div>').addClass('col-6 col-lg-2 col-sm-4 align-self-center zoom');
+            const card = $('<div>').addClass('col-6 col-lg-2 col-sm-4 align-self-center zoom mb-4');
             const color = STATE.colors[colorIndex % STATE.colors.length];
             card.html(Utils.createPersonCard(lab, color, 'home', lab.lab));
             card.appendTo(labsContainer);
