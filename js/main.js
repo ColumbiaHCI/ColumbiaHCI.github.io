@@ -27,6 +27,7 @@ const CONFIG = {
 const STATE = {
     seminarsData: {},
     currentSemester: '',
+    currentPublicationYear: '',
     colors: []
 };
 
@@ -335,57 +336,91 @@ const DataLoaders = {
  */
 renderPublications(publications) {
     const groupedPublications = this.groupByYearAndConference(publications);
-    const container = $(CONFIG.elements.publications).empty();
-    const sortedYears = Object.keys(groupedPublications).sort((a, b) => b - a);
-    const currentYear = new Date().getFullYear();
+    const years = Object.keys(groupedPublications).sort((a, b) => parseInt(b, 10) - parseInt(a, 10));
 
-    sortedYears.forEach(year => {
-        const publicationCount = Object.values(groupedPublications[year])
-            .reduce((sum, confPubs) => sum + confPubs.length, 0);
-        
-        const yearDiv = $('<div>').addClass('year-section').css('width', '100%');
-        const yearHeader = $(`<div class="year-header" style="cursor: pointer; margin-bottom: 10px; font-weight: bold;">
-            <span class="arrow">&#9654;</span> ${year} (${publicationCount})
-        </div>`);
-        
-        const yearContent = $('<div>').addClass('year-content');
+    // Build year tabs
+    this.renderPublicationYearTabs(years);
 
-        // Show current year by default
-        if (parseInt(year) === currentYear) {
-            yearContent.show();
-            yearHeader.find('.arrow').html('&#9660;');
-        } else {
-            yearContent.hide();
-        }
+    // Default to latest year available
+    const defaultYear = years[0] || '';
+    this.setPublicationYear(defaultYear, groupedPublications);
+},
 
-        yearHeader.on('click', () => this.toggleYearContent(yearContent, yearHeader.find('.arrow')));
+/**
+ * Render publication year tabs (like seminar tabs)
+ */
+renderPublicationYearTabs(years) {
+    const tabs = $('#publicationYearTabs');
+    if (!tabs.length) return;
 
-        yearDiv.append(yearHeader).append(yearContent).appendTo(container);
+    tabs.empty();
 
-        // Add conferences and publications
-        const conferenceContainer = $('<div>').appendTo(yearContent);
-        Object.entries(groupedPublications[year]).forEach(([conference, pubs]) => {
-            const conferenceDiv = $('<div>').addClass('conference mb-3');
-            $('<h4>').text(conference).appendTo(conferenceDiv);
-
-            pubs.forEach(pub => {
-                const entryCard = $('<a>').addClass('publication-card')
-                    .attr('href', pub.doi)
-                    .attr('target', '_blank')
-                
-                const linkIcon = `<i class='far fa-file'></i>`;
-                const pubTitle = `<div class='pub-title'>${pub.title}</div>`;
-                const authors = pub.authors.split(':').join(',');
-                
-                $('<div>').addClass('icon').html(linkIcon).appendTo(entryCard);
-                $('<div>').addClass('details').html(`${pubTitle}${authors}`).appendTo(entryCard);
-                
-                entryCard.appendTo(conferenceDiv);
+    years.forEach((year) => {
+        const btn = $('<button>')
+            .addClass('year-tab')
+            .attr('type', 'button')
+            .attr('role', 'tab')
+            .attr('data-year', year)
+            .attr('aria-selected', 'false')
+            .text(year)
+            .on('click', () => {
+                const grouped = this._lastGroupedPublications;
+                this.setPublicationYear(year, grouped);
             });
 
-            conferenceDiv.appendTo(conferenceContainer);
-        });
+        tabs.append(btn);
     });
+},
+
+/**
+ * Set current publication year and render only that year
+ */
+setPublicationYear(year, groupedPublications) {
+    if (!year || !groupedPublications || !groupedPublications[year]) return;
+
+    // Save for tab click reuse
+    this._lastGroupedPublications = groupedPublications;
+
+    STATE.currentPublicationYear = year;
+
+    // Update active tab styles + aria
+    const tabs = $('#publicationYearTabs');
+    tabs.find('.year-tab').each(function () {
+        const $btn = $(this);
+        const isActive = String($btn.data('year')) === String(year);
+        $btn.toggleClass('active', isActive);
+        $btn.attr('aria-selected', isActive ? 'true' : 'false');
+    });
+
+    // Render selected year only
+    const container = $(CONFIG.elements.publications).empty();
+    const yearSection = $('<div>').addClass('year-section').css('width', '100%');
+
+    const conferenceContainer = $('<div>').appendTo(yearSection);
+    Object.entries(groupedPublications[year]).forEach(([conference, pubs]) => {
+        const conferenceDiv = $('<div>').addClass('conference mb-3');
+        $('<h4>').text(conference).appendTo(conferenceDiv);
+
+        pubs.forEach(pub => {
+            const entryCard = $('<a>')
+                .addClass('publication-card')
+                .attr('href', pub.doi)
+                .attr('target', '_blank');
+
+            const linkIcon = `<i class='far fa-file'></i>`;
+            const pubTitle = `<div class='pub-title'>${pub.title}</div>`;
+            const authors = pub.authors.split(':').join(',');
+
+            $('<div>').addClass('icon').html(linkIcon).appendTo(entryCard);
+            $('<div>').addClass('details').html(`${pubTitle}${authors}`).appendTo(entryCard);
+
+            entryCard.appendTo(conferenceDiv);
+        });
+
+        conferenceDiv.appendTo(conferenceContainer);
+    });
+
+    yearSection.appendTo(container);
 },
 
     /**

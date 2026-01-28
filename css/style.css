@@ -343,6 +343,56 @@ h4 {
   border-radius: 999px;
 }
 
+/* Publications: Year tabs */
+.year-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  border-bottom: 1px solid rgba(0, 56, 101, 0.25);
+  padding-bottom: 6px;
+}
+
+.year-tab {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  padding: 6px 2px;
+  color: #003865;
+  font-weight: 400;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  position: relative;
+}
+
+.year-tab:hover {
+  font-weight: 500;
+}
+
+.year-tab:focus {
+  outline: none;
+}
+
+.year-tab:focus-visible {
+  outline: 2px solid rgba(55, 157, 212, 0.6);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+.year-tab.active {
+  font-weight: 600;
+}
+
+.year-tab.active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -7px;
+  height: 3px;
+  background: #379DD4;
+  border-radius: 999px;
+}
+
 @media screen and (max-width: 1200px) {
 	.page-content {
 		padding: 0 5rem !important;
