@@ -15,6 +15,7 @@ const CONFIG = {
     colors: ['#9B2F7A', '#379DD4', '#61BA84', '#E1B917', '#003865'],
     elements: {
         people: '#people-section',
+        msStudents: '#ms-students-section',
         labs: '#about-labs',
         alumni: '#alumni-section',
         publications: '#publication-section',
@@ -170,6 +171,7 @@ const DataLoaders = {
             }
 
             const students = [];
+            const msStudents = [];
             const labs = [];
             STATE.colors = Utils.shuffleArray(CONFIG.colors);
             let colorIndex = 0;
@@ -193,6 +195,8 @@ const DataLoaders = {
 
                 if (person.role.toLowerCase().includes("phd")) {
                     students.push(person);
+                } else if (person.role.toLowerCase().startsWith("ms")) {
+                    msStudents.push(person);
                 } else {
                     labs.push(person);
                 }
@@ -200,9 +204,10 @@ const DataLoaders = {
 
             // Sort students by name
             students.sort((a, b) => a.name.localeCompare(b.name));
+            msStudents.sort((a, b) => a.name.localeCompare(b.name));
 
             // Render people cards
-            this.renderPeople(students, labs, colorIndex);
+            this.renderPeople(students, msStudents, labs, colorIndex);
             
         } catch (error) {
             console.error("Error loading people:", error);
@@ -213,8 +218,9 @@ const DataLoaders = {
     /**
      * Render people cards
      */
-    renderPeople(students, labs, colorIndex) {
+    renderPeople(students, msStudents, labs, colorIndex) {
         const peopleContainer = $(CONFIG.elements.people).empty();
+        const msStudentsContainer = $(CONFIG.elements.msStudents).empty();
         const labsContainer = $(CONFIG.elements.labs).empty();
 
         // Render student cards
@@ -223,6 +229,15 @@ const DataLoaders = {
             const color = STATE.colors[colorIndex % STATE.colors.length];
             card.html(Utils.createPersonCard(student, color));
             card.appendTo(peopleContainer);
+            colorIndex++;
+        });
+
+        // Render M.S. student cards
+        msStudents.forEach(student => {
+            const card = $('<div>').addClass('col-6 col-lg-2 col-sm-4 align-self-center zoom mb-4');
+            const color = STATE.colors[colorIndex % STATE.colors.length];
+            card.html(Utils.createPersonCard(student, color));
+            card.appendTo(msStudentsContainer);
             colorIndex++;
         });
 
