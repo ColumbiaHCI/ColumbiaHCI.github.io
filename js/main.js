@@ -12,7 +12,7 @@ const CONFIG = {
         seminars: 'data/seminars.csv',
         headshots: './media/headshots/'
     },
-    colors: ['#9B2F7A', '#379DD4', '#61BA84', '#E1B917', '#003865'],
+    colors: ['#9B2F7A', '#247AA9', '#388155', '#89710E', '#003865'],
     elements: {
         people: '#people-section',
         msStudents: '#ms-students-section',
@@ -95,7 +95,7 @@ const Utils = {
         return `
             <div class="rect-img-container">
                 <a href="${url}" target="_blank" rel="noopener noreferrer">
-                    <img src="${CONFIG.paths.headshots}${person.pic_url}" alt="${displayName}" style="height: auto; width: 100%;">
+                    <img src="${CONFIG.paths.headshots}${person.pic_url}" alt="${displayName.replace(/"/g, '&quot;')}" style="height: auto; width: 100%;">
                 </a>
             </div>
             <div class="person-card-footer" style="background-color: ${color}">
@@ -322,7 +322,8 @@ const DataLoaders = {
                     continue;
                 }
                 
-                const tokens = line.split(',');
+                // Papa handles quoted titles that contain commas
+                const tokens = Papa.parse(line).data[0] || [];
                 if (tokens.length < 5) continue;
                 
                 const year = tokens[0]?.trim();
@@ -427,7 +428,7 @@ setPublicationYear(year, groupedPublications) {
     const conferenceContainer = $('<div>').appendTo(yearSection);
     Object.entries(groupedPublications[year]).forEach(([conference, pubs]) => {
         const conferenceDiv = $('<div>').addClass('conference mb-3');
-        $('<h4>').text(conference).appendTo(conferenceDiv);
+        $('<h3>').addClass('h4').text(conference).appendTo(conferenceDiv);
 
         pubs.forEach(pub => {
             const entryCard = $('<a>')
@@ -518,8 +519,6 @@ setPublicationYear(year, groupedPublications) {
      */
     getDefaultSemester() {
         const semesters = Object.keys(STATE.seminarsData);
-        if (semesters.includes('spring2026')) return 'spring2026';
-        if (semesters.includes('spring2025')) return 'spring2025';
         if (semesters.length === 0) return '';
 
         // Most recent semester by chronological compare
@@ -552,7 +551,10 @@ setPublicationYear(year, groupedPublications) {
                 name: row.name || '',
                 url: row.url || '',
                 title: row.title || '',
-                description: row.description || ''
+                description: row.description || '',
+                time: row.time || '',
+                location: row.location || '',
+                abstract: row.abstract || ''
             });
         });
         
@@ -658,18 +660,14 @@ setPublicationYear(year, groupedPublications) {
         seminars.forEach(seminar => {
             html += '<li>';
             
-            if (seminar.url && seminar.name) {
-                html += `<a href="${seminar.url}" target="_blank"><b>${seminar.date} - ${seminar.name}</b></a>`;
-            } else if (seminar.name) {
-                html += `<b>${seminar.date} - ${seminar.name}</b>`;
-            } else {
-                html += `<b>${seminar.date}</b>`;
-            }
-            
-            if (seminar.title) {
-                html += `: "${seminar.title}"`;
-            }
-            
+            const talkUrl = `talk.html?id=${selectedSemester}-${seminar.date.replace('/', '-')}`;
+            const speaker = seminar.url
+                ? `<a href="${seminar.url}" target="_blank" rel="noopener noreferrer" class="seminar-speaker">${seminar.name}</a>`
+                : seminar.name;
+
+            html += `<b>${seminar.date}${seminar.name ? ` - ${speaker}` : ''}</b>`;
+            html += `: <a href="${talkUrl}" class="seminar-title">${seminar.title ? `"${seminar.title}"` : 'Title to be announced'}</a>`;
+
             if (seminar.description) {
                 html += ` - ${seminar.description}`;
             }
@@ -726,6 +724,9 @@ const EventHandlers = {
  * Main Application Initialization
  */
 $(document).ready(function () {
+    // Talk detail pages load this file for CONFIG/Utils only
+    if (!document.getElementById('seminar')) return;
+
     console.log("Initializing academic website...");
     
     // Initialize event handlers
