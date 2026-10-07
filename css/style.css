@@ -96,7 +96,7 @@
 }
 
 .person-link {
-  color: rgba(255, 255, 255, 0.95) !important;
+  color: #ffffff !important;
   font-size: 0.8rem;
   font-weight: 300 !important;
   display: block;
@@ -150,6 +150,26 @@ footer {
   z-index: -1; /* Position behind the footer's content */
 }
 
+footer {
+  z-index: 0; /* keep the image and scrim inside the footer's stacking context */
+}
+
+/* On narrow screens the lion sits behind the text; tint it so white text stays readable */
+@media screen and (max-width: 991px) {
+  footer::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(90deg, #003865 0%, #003865 40%, rgba(0, 56, 101, 0) 65%);
+  }
+}
+@media screen and (max-width: 575px) {
+  footer::after {
+    background: rgba(0, 56, 101, 0.72);
+  }
+}
+
 ::-moz-selection {
 	color: #333;
 	background: rgb(221, 221, 221);
@@ -187,7 +207,8 @@ p > a {
 	font-weight: 400;
 }
 
-h4 {
+h4,
+h3.h4 {
 	font-size: 1.1rem;
 	margin-bottom: 1.5rem;
 }
@@ -315,7 +336,8 @@ h4 {
   font-size: 0.95rem;
 }
 
-.conference h4 {
+.conference h4,
+.conference h3 {
   border-bottom: 2px solid #333;
   border-width: 100% !important;
   padding-top: 10px;
@@ -459,3 +481,62 @@ h4 {
 	    padding: 2rem .3rem !important;
     }
 }
+/* Talk detail page */
+.talk-kicker {
+  color: #003865;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+}
+.talk-title {
+  color: #003865;
+}
+.talk-speaker {
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+.talk-details li {
+  margin-bottom: 0.4rem;
+}
+.talk-details i {
+  width: 1.25rem;
+  color: #003865;
+}
+.talk-btn {
+  border: 1px solid #003865;
+  color: #003865;
+  margin: 0 0.5rem 0.5rem 0;
+}
+.talk-btn:hover {
+  background-color: #003865;
+  color: #ffffff;
+}
+.talk-photo {
+  width: 100%;
+  max-width: 280px;
+  height: auto;
+}
+
+#talk {
+  padding-top: 6rem !important;
+}
+#seminarsContainer li {
+  margin-bottom: 0.3rem;
+}
+#seminarsContainer .seminar-speaker,
+.text-link {
+  color: #003865 !important;
+  text-decoration: underline !important;
+  text-decoration-thickness: 1px !important;
+  text-underline-offset: 3px;
+}
+#seminarsContainer .seminar-speaker:hover,
+#seminarsContainer .seminar-title:hover,
+.text-link:hover {
+  color: #247AA9 !important;
+}
+#seminarsContainer .seminar-title:hover {
+  text-decoration: underline !important;
+}
+
