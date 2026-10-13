@@ -42,6 +42,17 @@
 
   <!-- <link rel="stylesheet" href="css/typo.css"> -->
   <link rel="stylesheet" href="css/style.css">
+  <!-- Apply display preferences before first paint (DisplayPrefs in js/main.js owns the UI) -->
+  <script>
+    (function () {
+      var root = document.documentElement, get = function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } };
+      var mq = function (q) { return window.matchMedia && matchMedia(q).matches; };
+      var theme = get('hci-theme') || 'system';
+      root.setAttribute('data-theme', theme === 'system' ? (mq('(prefers-color-scheme: dark)') ? 'dark' : 'light') : theme);
+      var text = get('hci-text');
+      if (text && text !== '100') root.setAttribute('data-text', text);
+    })();
+  </script>
   <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script> -->
   <script src="/js/main.js"></script>
 
@@ -52,8 +63,28 @@
   <nav class="navbar navbar-expand-lg sticky-top navbar-light bg-light">
     <a class="navbar-brand" href="#">
       <img src="./media/logo.png" height=50px class="img-logo"
-        alt="Columbia University crown combined with the acronym HCI">
+        alt="Columbia HCI home">
     </a>
+    <div class="display-settings">
+      <button type="button" class="display-toggle" id="displaySettingsButton" aria-expanded="false" aria-controls="displaySettingsPanel" aria-label="Display settings" title="Display settings">
+        <i class="fas fa-sliders-h" aria-hidden="true"></i>
+      </button>
+      <div class="display-panel" id="displaySettingsPanel" hidden>
+        <fieldset>
+          <legend>Theme</legend>
+          <label><input type="radio" name="hci-theme" value="system"> System</label>
+          <label><input type="radio" name="hci-theme" value="light"> Light</label>
+          <label><input type="radio" name="hci-theme" value="dark"> Dark</label>
+        </fieldset>
+        <fieldset>
+          <legend>Text size</legend>
+          <label><input type="radio" name="hci-text" value="100"> Default</label>
+          <label><input type="radio" name="hci-text" value="112"> Large</label>
+          <label><input type="radio" name="hci-text" value="125"> Larger</label>
+          <label><input type="radio" name="hci-text" value="150"> Largest</label>
+        </fieldset>
+      </div>
+    </div>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
       aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -104,22 +135,22 @@
 
       <!-- people section -->
       <div class="container pt-4">
-        <p style="font-weight: 500 !important; text-transform: uppercase; z-index:1">Faculty</p>
+        <h2 class="people-label">Faculty</h2>
         <div class="row no-gutters section position-relative overflow-hidden">
           <div id="about-labs" class="row section position-relative gy-5 overflow-hidden"></div>
         </div>
 
-        <p style="font-weight: 500 !important; text-transform: uppercase; z-index:1">Ph.D. Students & Postdocs</p>
+        <h2 class="people-label">Ph.D. Students & Postdocs</h2>
         <div class="row no-gutters section position-relative overflow-hidden">
           <div id="people-section" class="row section position-relative gy-5 overflow-hidden"></div>
         </div>
 
-        <p style="font-weight: 500 !important; text-transform: uppercase; z-index:1">M.S. Students</p>
+        <h2 class="people-label">M.S. Students</h2>
         <div class="row no-gutters section position-relative overflow-hidden">
           <div id="ms-students-section" class="row section position-relative gy-5 overflow-hidden"></div>
         </div>
 
-        <p style="font-weight: 500 !important; text-transform: uppercase; z-index:1">Alumni</p>
+        <h2 class="people-label">Alumni</h2>
         <div class="row no-gutters section position-relative overflow-hidden pl-3">
           <div id="alumni-section" class="row section position-relative gy-1 overflow-hidden"></div>
         </div>
@@ -158,7 +189,7 @@
               <div class="loading">Loading seminar data...</div>
             </div>
 
-            <div class="card shadow-sm mb-4 text-white" style="background-color:#247AA9; min-width: 100px;">
+            <div class="card shadow-sm mb-4 text-white" style="background-color:#1B5C80; min-width: 100px;">
               <div class="card-body">
                 <h3 class="h4 font-weight-bold mb-3">Interested in Hosting or Speaking?</h3>
                 <p>If you are interested in hosting a speaker or presenting at the HCI seminar, please get in touch with the Columbia HCI group organizers (<a href="https://iamtaolong.github.io/" class="text-white" target="_blank" rel="noopener noreferrer"><u>Tao Long</u></a>, <a href="https://jennygzma.github.io/" class="text-white" target="_blank" rel="noopener noreferrer"><u>Jenny Ma</u></a> &amp; <a href="https://akaul02.github.io/" class="text-white" target="_blank" rel="noopener noreferrer"><u>Aryan Kaul</u></a>). In Fall 2026, the seminars take place on Mondays from 1 to 2 p.m. in CSB 480 on the Columbia University Morningside campus and on Zoom, beginning with time for socializing, followed by a 40-50 minute talk and a Q&amp;A session.</p>
@@ -194,7 +225,7 @@
           <br>
           New York NY 10027 <br> United States
           <br><br>
-          <span style="font-size:.8rem;color:white;">Want to update the site? <br />Any question? </span>
+          <span class="footer-small" style="color:white;">Want to update the site? <br />Any question? </span>
 
           <br>
           <span style="font-size:1.6rem;color:white"> <a href="mailto:hci.columbia@gmail.com" aria-label="Email Columbia HCI"><i aria-hidden="true" class="far fa-envelope"
@@ -204,7 +235,7 @@
           <span style="font-size:1.9rem; padding-left: 7px;color:white"><a
               href="https://github.com/ColumbiaHCI/ColumbiaHCI.github.io" aria-label="Site source on GitHub"><i aria-hidden="true" class="fa fa-github"
                 style="color: #ffffff;"></i></a></span><br />
-          <span style="font-size:.6rem; text-align: right; padding-right: 2rem; margin-top: -2rem;padding-bottom:0">Note: Lion
+          <span class="footer-note">Note: Lion
                   generated by DALL-E (OpenAI) for the recent Columbia Barnard Undergraduate Research Fair</span>
         </p>
       </div>

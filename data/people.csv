@@ -1,38 +1,37 @@
 title,name,page,image,lab,
-professor,Brian A. Smith,https://www.cs.columbia.edu/~brian/,brian_smith_headshot.png,Computer-Enabled Abilities Lab (CEAL),https://ceal.cs.columbia.edu/
-professor,Lena Mamykina,http://www.mamykina.com/,lena_mamykina_headshot.jpeg,Action Research for Collective Health Lab (ARCH),https://www.mamykina.com/
-professor,Lydia B. Chilton,http://www.cs.columbia.edu/~chilton/chilton.html,lydia_chilton_headshot.jpg,Computational Design Lab<br><br>,http://www.cs.columbia.edu/~chilton
-professor,Steven K. Feiner,http://www.cs.columbia.edu/~feiner/,steven_feiner_headshot.jpeg,Computer Graphics and User Interfaces Lab (CGUI),https://graphics.cs.columbia.edu//home
+professor,Brian A. Smith,https://www.cs.columbia.edu/~brian/,brian_smith_headshot.png,Computer-Enabled Abilities Lab,https://ceal.cs.columbia.edu/
+professor,Lena Mamykina,http://www.mamykina.com/,lena_mamykina_headshot.jpeg,Action Research for Collective Health Lab,https://www.mamykina.com/
+professor,Lydia B. Chilton,http://www.cs.columbia.edu/~chilton/chilton.html,lydia_chilton_headshot.jpg,Computational Design Lab,http://www.cs.columbia.edu/~chilton
+professor,Steven K. Feiner,http://www.cs.columbia.edu/~feiner/,steven_feiner_headshot.jpeg,Computer Graphics and User Interfaces Lab,https://graphics.cs.columbia.edu//home
 professor,Xia Zhou,https://www.cs.columbia.edu/~xia/,xia_zhou_headshot.jpeg,Mobile X Lab,https://www.cs.columbia.edu/~xia/
-professor,Tiffany Tseng,https://tifftseng.com/,tiffany_tseng_headshot.jpeg,Design Tools Lab<br><br>,https://tifftseng.com/
-professor,Xuhai “Orson” Xu,https://orsonxu.com/,xuhai_orson_xu_headshot.jpeg, Sense Empower and Augment Lab (SEA Lab),https://orsonxu.com/
-phd ,Vivian Liu,https://vivian-liu.com/,vivian_liu_headshot.jpeg,,
+professor,Tiffany Tseng,https://tifftseng.com/,tiffany_tseng_headshot.jpeg,Design Tools Lab,https://tifftseng.com/
+professor,Xuhai “Orson” Xu,https://orsonxu.com/,xuhai_orson_xu_headshot.jpeg, Sense Empower and Augment Lab,https://orsonxu.com/
 phd ,Blue (Georgianna) Lin ,https://bluelin.me/,blue_lin_headshot.jpg,,
 phd ,Zhihan Jiang ,https://zhihanjiang.com/,zhihan_jiang_headshot.jpg,,
-phd ,Mengyuan "Millie" Wu ,http://milliewu.io/,millie_wu_headshot.jpg,,
+phd ,Mengyuan "Millie" Wu ,https://mengyuanwu1.github.io/,millie_wu_headshot.jpg,,
 phd ,Tao Long,https://iamtaolong.github.io/,tao_long_headshot.jpeg,,
-phd ,Yulun Du,https://www.linkedin.com/in/yulundu/,yulun_du_headshot.jpeg,,
 phd ,Xuanming Zhang,https://billyzhang24kobe.github.io/,billy_zhang_headshot.jpg,,
-phd ,Bettina Schlager,https://www.cs.columbia.edu/~bschlager/,bettina_schlager_headshot.jpeg,,
 phd ,Ziheng Leo Li,https://www.linkedin.com/in/ziheng-leo-li,leo_ziheng_li_headshot.jpeg,,
 phd ,Ben Yang,https://www.cs.columbia.edu/~benyang/,ben_yang_headshot.jpeg,,
 phd ,Adrienne Pichon,http://www.columbia.edu/~ab3886/,adrienne_pichon_headshot.jpeg,,
 phd ,Ho Man Colman Leung,http://colmanleung.com/,colman_leung_headshot.jpeg,,
-phd ,Qijia Shao,https://qijiashao.github.io/,qijia_shao_headshot.png,,
-phd ,Charlie Carver,https://www.cs.columbia.edu/~cjc/,charlie_carver_headshot.jpeg,,
-phd ,Hadleigh Schwartz,https://www.linkedin.com/in/hadleigh-s-7071a8132/,hadleigh_schwartz_headshot.png,,
-phd ,Toma Itagaki,https://www.tomaitagaki.com/,toma_itagaki_headshot.jpeg,,
+phd ,Hadleigh Schwartz,https://hadleigh-schwartz.github.io/,hadleigh_schwartz_headshot.png,,
 phd ,Xiaofeng Yan,https://www.linkedin.com/in/xiaofeng-yan/,xiaofeng_yan_headshot.jpeg,,
-phd ,Lisa-Maria DiSalvo, https://lisdis19.github.io,lisa_maria_disalvo.jpg,,
-phd ,Riya Sahni, https://www.linkedin.com/in/riya-sahni/,riya_sahni_headshot.jpeg,,
-phd ,David Nguyen, https://www.linkedin.com/in/david-v-nguyen,david_nguyen_headshot.png,,
-phd ,Ziang Lex Ren, https://www.linkedin.com/in/lexren/,ziang_lex_ren.jpg,,
-phd ,Karthik Sreedhar, https://www.linkedin.com/in/karthik-sreedhar/,KarthikSreedhar.jpeg,,
-phd ,Jenny Ma, https://jennygzma.github.io/,JennyMa.jpeg,,
-phd ,Sidharth Sharma, https://www.linkedin.com/in/sidsharma22/,sid_headshot.jpeg,,
-phd ,Reya Vir, https://reyavir.com/,reya_vir_headshot.png,,
-phd ,Jenny Fu, https://jennyxfu.github.io/,jenny_fu_headshot.png,,
-phd ,Ut (Jo Jo) Gong, https://utgong.com/,ut_gong_headshot.png,,
-
-
+phd ,Lisa-Maria DiSalvo,https://lisamaria.carrd.co/,lisa_maria_disalvo.jpg,,
+phd ,Riya Sahni,https://riyasahni.github.io/,riya_sahni_headshot.jpeg,,
+phd ,David Nguyen,https://www.linkedin.com/in/david-v-nguyen,david_nguyen_headshot.png,,
+phd ,Ziang Lex Ren,https://www.linkedin.com/in/lexren/,ziang_lex_ren.jpg,,
+phd ,Karthik Sreedhar,https://www.linkedin.com/in/karthik-sreedhar/,KarthikSreedhar.jpeg,,
+phd ,Jenny Ma,https://jennygzma.github.io/,JennyMa.jpeg,,
+phd ,Sidharth Sharma,https://www.linkedin.com/in/sidsharma22/,sid_headshot.jpeg,,
+phd ,Reya Vir,https://reyavir.com/,reya_vir_headshot.png,,
+phd ,Ut (Jo Jo) Gong,https://utgong.com/,ut_gong_headshot.png,,
+phd ,Yuang Fan,https://www.linkedin.com/in/yuang-fan/,yuang_fan_headshot.jpg,,
+phd ,Muying Li,http://www.linkedin.com/in/muyingli,muying_li_headshot.jpg,,
+phd ,Kayla Schiffer-Kane,https://www.linkedin.com/in/kayla-schiffer-kane-448219141/,kayla_schiffer_kane_headshot.jpg,,
+phd ,Will Ke Wang,https://www.linkedin.com/in/will-ke-wang/,will_wang_headshot.jpg,,
+phd ,Jenny Fu,https://jennyxfu.github.io/,jenny_fu_headshot.png,,
+phd ,Changhun Lee,https://www.linkedin.com/in/changhun-lee-6255226a/,changhun_lee_headshot.jpg,,
+phd ,Jesse J. Martinez,https://homes.cs.washington.edu/~jessejm/,jesse_martinez_headshot.jpg,,
+phd ,Pinyuan Feng,https://tonyfpy.github.io/my-website/,pinyuan_feng_headshot.png,,
 ms,Aryan Kaul,https://akaul02.github.io/,aryan_kaul_headshot.jpeg,,

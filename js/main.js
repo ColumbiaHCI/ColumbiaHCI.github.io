@@ -12,7 +12,7 @@ const CONFIG = {
         seminars: 'data/seminars.csv',
         headshots: './media/headshots/'
     },
-    colors: ['#9B2F7A', '#247AA9', '#388155', '#89710E', '#003865'],
+    colors: ['#952D75', '#1B5C80', '#2A6140', '#E1B917', '#003865'],
     elements: {
         people: '#people-section',
         msStudents: '#ms-students-section',
@@ -86,27 +86,70 @@ const Utils = {
         // Faculty: show only the lab name link (as requested)
         const linksHtml = linkIcon === 'home'
             ? `
-                ${hasLabLink ? `<a class="person-link" href="${person.lab_url}" target="_blank" rel="noopener noreferrer">${iconSvg} ${person.lab}</a>` : ''}
+                ${hasLabLink ? `<a class="person-link" href="${person.lab_url}" target="_blank" rel="noopener noreferrer">${iconSvg} ${person.lab}<span class="sr-only"> (opens in new tab)</span></a>` : ''}
               `
             : `
-                <a class="person-link" href="${url}" target="_blank" rel="noopener noreferrer">${iconSvg} ${linkLabel}</a>
+                <a class="person-link" href="${url}" target="_blank" rel="noopener noreferrer">${iconSvg} ${linkLabel}<span class="sr-only"> (opens in new tab)</span></a>
               `;
 
         return `
             <div class="rect-img-container">
-                <a href="${url}" target="_blank" rel="noopener noreferrer">
-                    <img src="${CONFIG.paths.headshots}${person.pic_url}" alt="${displayName.replace(/"/g, '&quot;')}" style="height: auto; width: 100%;">
+                <a href="${url}" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true">
+                    <img src="${CONFIG.paths.headshots}${person.pic_url}" alt="${displayName.replace(/"/g, '&quot;')}">
                 </a>
             </div>
-            <div class="person-card-footer" style="background-color: ${color}">
+            <div class="person-card-footer${Utils.isLightColor(color) ? ' card-light' : ''}" style="background-color: ${color}">
                 <div class="person-name-row">
-                    <a href="${url}" target="_blank" rel="noopener noreferrer" class="person-name-link">${displayName}</a>
+                    <a href="${url}" target="_blank" rel="noopener noreferrer" class="person-name-link">${displayName}<span class="sr-only"> (opens in new tab)</span></a>
                 </div>
                 <div class="person-links-row">
                     ${linksHtml}
                 </div>
             </div>
         `;
+    },
+
+    /**
+     * Complete the ARIA tab pattern for a tablist of buttons: ids,
+     * aria-controls, roving tabindex, and a labelled tabpanel.
+     * Keyboard handling is attached once per tablist.
+     */
+    syncTabs(tablistSelector, panelSelector) {
+        const tablist = $(tablistSelector);
+        const panel = $(panelSelector);
+        const panelId = panel.attr('id');
+        const tabs = tablist.find('[role="tab"]');
+        tabs.each(function () {
+            const $tab = $(this);
+            const key = $tab.data('semester') || $tab.data('year');
+            const selected = $tab.attr('aria-selected') === 'true';
+            $tab.attr({ id: `${panelId}-tab-${key}`, 'aria-controls': panelId, tabindex: selected ? '0' : '-1' });
+            if (selected) panel.attr('aria-labelledby', $tab.attr('id'));
+        });
+        panel.attr({ role: 'tabpanel', tabindex: '0' });
+
+        if (tablist.data('keysBound')) return;
+        tablist.data('keysBound', true);
+        tablist.on('keydown', '[role="tab"]', (event) => {
+            const all = tablist.find('[role="tab"]').toArray();
+            const index = all.indexOf(event.currentTarget);
+            const targets = { ArrowRight: index + 1, ArrowLeft: index - 1, Home: 0, End: all.length - 1 };
+            if (!(event.key in targets)) return;
+            event.preventDefault();
+            const next = all[(targets[event.key] + all.length) % all.length];
+            next.focus();
+            next.click();
+        });
+    },
+
+    /**
+     * True when a background is light enough that white text would be unreadable
+     */
+    isLightColor(hex) {
+        const channels = [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16) / 255)
+            .map(c => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4));
+        const luminance = 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2];
+        return luminance > 0.18;
     },
 
     /**
@@ -225,7 +268,7 @@ const DataLoaders = {
 
         // Render student cards
         students.forEach(student => {
-            const card = $('<div>').addClass('col-6 col-lg-2 col-sm-4 align-self-center zoom mb-4');
+            const card = $('<div>').addClass('col-6 col-lg-2 col-sm-4 person-card zoom mb-4');
             const color = STATE.colors[colorIndex % STATE.colors.length];
             card.html(Utils.createPersonCard(student, color));
             card.appendTo(peopleContainer);
@@ -234,7 +277,7 @@ const DataLoaders = {
 
         // Render M.S. student cards
         msStudents.forEach(student => {
-            const card = $('<div>').addClass('col-6 col-lg-2 col-sm-4 align-self-center zoom mb-4');
+            const card = $('<div>').addClass('col-6 col-lg-2 col-sm-4 person-card zoom mb-4');
             const color = STATE.colors[colorIndex % STATE.colors.length];
             card.html(Utils.createPersonCard(student, color));
             card.appendTo(msStudentsContainer);
@@ -243,7 +286,7 @@ const DataLoaders = {
 
         // Render lab cards
         labs.forEach(lab => {
-            const card = $('<div>').addClass('col-6 col-lg-2 col-sm-4 align-self-center zoom mb-4');
+            const card = $('<div>').addClass('col-6 col-lg-2 col-sm-4 person-card zoom mb-4');
             const color = STATE.colors[colorIndex % STATE.colors.length];
             card.html(Utils.createPersonCard(lab, color, 'home', lab.lab));
             card.appendTo(labsContainer);
@@ -292,15 +335,35 @@ const DataLoaders = {
      */
     renderAlumni(alumni) {
         const container = $(CONFIG.elements.alumni).empty();
+        const NEW_TAB = '<span class="sr-only"> (opens in new tab)</span>';
+        // alumni.csv uses mixed labels ("Ph.D.", "ms student", "ugrad"); group them consistently
+        const groups = [
+            { label: 'Ph.D.', match: t => /ph\.?d/i.test(t) },
+            { label: 'M.S.', match: t => /^ms|master/i.test(t) },
+            { label: 'Undergraduate', match: t => /ugrad|undergrad|b\.?[as]/i.test(t) }
+        ];
 
-        alumni.forEach(alumn => {
-            const card = $('<div>');
-            const content = alumn.page
-                ? `<a href="${alumn.page}" target='_blank'><p style="font-size: 0.85rem; font-weight: 300 !important; padding: .2rem .3rem; margin: 0 !important; text-align: left;"><u>${alumn.name}</u> (${alumn.year} - ${alumn.title})</p></a>`
-                : `<p style="font-size: 0.85rem; font-weight: 300 !important; padding: .2rem .3rem; margin: 0 !important; text-align: left; color: black;">${alumn.name} (${alumn.year} - ${alumn.title})</p>`;
-            
-            card.html(content).appendTo(container);
+        const wrapper = $('<div>').addClass('alumni-groups');
+        groups.forEach(group => {
+            const members = alumni
+                .filter(a => group.match(a.title || ''))
+                .sort((a, b) => (parseInt(b.year) - parseInt(a.year)) || a.name.localeCompare(b.name));
+            if (!members.length) return;
+
+            const items = members.map(a => {
+                const name = a.page
+                    ? `<a href="${a.page}" target="_blank" rel="noopener noreferrer" class="text-link">${a.name}${NEW_TAB}</a>`
+                    : a.name;
+                return `<li>${name}<span class="alumni-year">, ${a.year}</span></li>`;
+            }).join('');
+
+            wrapper.append(`
+                <section class="alumni-group" aria-labelledby="alumni-${group.label.replace(/\W/g, '')}">
+                    <h3 class="alumni-heading" id="alumni-${group.label.replace(/\W/g, '')}">${group.label}</h3>
+                    <ul class="alumni-list">${items}</ul>
+                </section>`);
         });
+        container.append(wrapper);
     },
 
     /**
@@ -420,6 +483,7 @@ setPublicationYear(year, groupedPublications) {
         $btn.toggleClass('active', isActive);
         $btn.attr('aria-selected', isActive ? 'true' : 'false');
     });
+    Utils.syncTabs('#publicationYearTabs', '#publication-section');
 
     // Render selected year only
     const container = $(CONFIG.elements.publications).empty();
@@ -434,14 +498,15 @@ setPublicationYear(year, groupedPublications) {
             const entryCard = $('<a>')
                 .addClass('publication-card')
                 .attr('href', pub.doi)
-                .attr('target', '_blank');
+                .attr('target', '_blank')
+                .attr('rel', 'noopener noreferrer');
 
-            const linkIcon = `<i class='far fa-file'></i>`;
+            const linkIcon = `<i class='far fa-file' aria-hidden='true'></i>`;
             const pubTitle = `<div class='pub-title'>${pub.title}</div>`;
             const authors = pub.authors.split(':').join(',');
 
             $('<div>').addClass('icon').html(linkIcon).appendTo(entryCard);
-            $('<div>').addClass('details').html(`${pubTitle}${authors}`).appendTo(entryCard);
+            $('<div>').addClass('details').html(`${pubTitle}${authors}<span class="sr-only"> (opens in new tab)</span>`).appendTo(entryCard);
 
             entryCard.appendTo(conferenceDiv);
         });
@@ -624,6 +689,7 @@ setPublicationYear(year, groupedPublications) {
             $btn.toggleClass('active', isActive);
             $btn.attr('aria-selected', isActive ? 'true' : 'false');
         });
+        Utils.syncTabs(CONFIG.elements.semesterTabs, CONFIG.elements.seminarsContainer);
 
         this.showSemester(semester);
     },
@@ -661,16 +727,14 @@ setPublicationYear(year, groupedPublications) {
             html += '<li>';
             
             const talkUrl = `talk.html?id=${selectedSemester}-${seminar.date.replace('/', '-')}`;
-            const speaker = seminar.url
-                ? `<a href="${seminar.url}" target="_blank" rel="noopener noreferrer" class="seminar-speaker">${seminar.name}</a>`
-                : seminar.name;
+            const speaker = seminar.name
+                ? `<span class="seminar-speaker">${seminar.name}</span>`
+                : 'Speaker to be announced';
+            const title = seminar.title ? `"${seminar.title}"` : 'Title to be announced';
+            const description = seminar.description ? ` - ${seminar.description}` : '';
 
-            html += `<b>${seminar.date}${seminar.name ? ` - ${speaker}` : ''}</b>`;
-            html += `: <a href="${talkUrl}" class="seminar-title">${seminar.title ? `"${seminar.title}"` : 'Title to be announced'}</a>`;
-
-            if (seminar.description) {
-                html += ` - ${seminar.description}`;
-            }
+            // One link per talk: the whole line opens its talk page
+            html += `<a href="${talkUrl}" class="seminar-row"><b>${seminar.date} - ${speaker}</b>: ${title}${description}</a>`;
             
             html += '</li>';
         });
@@ -723,7 +787,74 @@ const EventHandlers = {
 /**
  * Main Application Initialization
  */
+/**
+ * Display settings panel: theme (system/light/dark) and text size. Preferences are stored per visitor; the inline <head> script
+ * applies them before first paint so pages don't flash.
+ */
+const DisplayPrefs = {
+    root: document.documentElement,
+
+    read(key) {
+        try { return localStorage.getItem(key); } catch (e) { return null; }
+    },
+
+    write(key, value) {
+        try { localStorage.setItem(key, value); } catch (e) { /* storage blocked */ }
+    },
+
+    applyTheme(choice) {
+        const dark = choice === 'dark' ||
+            (choice === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        this.root.setAttribute('data-theme', dark ? 'dark' : 'light');
+    },
+
+    init() {
+        const button = $('#displaySettingsButton');
+        const panel = $('#displaySettingsPanel');
+        if (!button.length) return;
+
+        const theme = this.read('hci-theme') || 'system';
+        const text = this.read('hci-text') || '100';
+        panel.find(`input[name="hci-theme"][value="${theme}"]`).prop('checked', true);
+        panel.find(`input[name="hci-text"][value="${text}"]`).prop('checked', true);
+
+        // Follow the OS setting live while the theme is "System"
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+            if ((this.read('hci-theme') || 'system') === 'system') this.applyTheme('system');
+        });
+
+        panel.on('change', 'input[name="hci-theme"]', (event) => {
+            this.write('hci-theme', event.target.value);
+            this.applyTheme(event.target.value);
+        });
+        panel.on('change', 'input[name="hci-text"]', (event) => {
+            const value = event.target.value;
+            this.write('hci-text', value);
+            if (value === '100') this.root.removeAttribute('data-text');
+            else this.root.setAttribute('data-text', value);
+        });
+
+        // Disclosure: toggle, close on Escape (focus returns) or outside click
+        const setOpen = (open) => {
+            button.attr('aria-expanded', open ? 'true' : 'false');
+            panel.prop('hidden', !open);
+        };
+        button.on('click', () => setOpen(panel.prop('hidden')));
+        $(document).on('keydown', (event) => {
+            if (event.key === 'Escape' && !panel.prop('hidden')) {
+                setOpen(false);
+                button.trigger('focus');
+            }
+        });
+        $(document).on('click', (event) => {
+            if (!panel.prop('hidden') && !$(event.target).closest('.display-settings').length) setOpen(false);
+        });
+    }
+};
+
 $(document).ready(function () {
+    DisplayPrefs.init();
+
     // Talk detail pages load this file for CONFIG/Utils only
     if (!document.getElementById('seminar')) return;
 

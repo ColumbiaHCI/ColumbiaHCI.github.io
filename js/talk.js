@@ -104,34 +104,37 @@ const TalkPage = {
         document.title = `${row.name} | HCI Seminar@Columbia`;
 
         const speaker = row.url
-            ? `<a class="text-link" href="${e(row.url)}" target="_blank" rel="noopener noreferrer">${e(row.name)}</a>`
+            ? `<a class="text-link" href="${e(row.url)}" target="_blank" rel="noopener noreferrer">${e(row.name)}<span class="sr-only"> (opens in new tab)</span></a>`
             : e(row.name);
 
         const details = [];
         const day = this.parseDay(row);
         if (day) {
-            details.push(`<li><i class="far fa-calendar"></i> ${this.formatDate(day)}</li>`);
+            details.push(`<li><i aria-hidden="true" class="far fa-calendar"></i> ${this.formatDate(day)}</li>`);
         }
         if (start) {
-            details.push(`<li><i class="far fa-clock"></i> ${e(row.time)} (New York time)</li>`);
+            details.push(`<li><i aria-hidden="true" class="far fa-clock"></i> ${e(row.time)} (New York time)</li>`);
+        }
+        if (row.format) {
+            details.push(`<li><i aria-hidden="true" class="fas fa-users"></i> ${e(row.format)}</li>`);
         }
         if (row.location) {
             const where = building
-                ? `${e(row.location)}, <a class="text-link" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(building.address)}" target="_blank" rel="noopener noreferrer">${e(building.name)}</a>`
+                ? `${e(row.location)}, <a class="text-link" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(building.address)}" target="_blank" rel="noopener noreferrer">${e(building.name)}<span class="sr-only"> (opens map in new tab)</span></a>`
                 : e(row.location);
-            details.push(`<li><i class="fas fa-map-marker-alt"></i> ${where}</li>`);
+            details.push(`<li><i aria-hidden="true" class="fas fa-map-marker-alt"></i> ${where}</li>`);
         }
         if (row.zoom) {
-            details.push(`<li><i class="fas fa-video"></i> <a class="text-link" href="${e(row.zoom)}" target="_blank" rel="noopener noreferrer">Join on Zoom</a></li>`);
+            details.push(`<li><i aria-hidden="true" class="fas fa-video"></i> <a class="text-link" href="${e(row.zoom)}" target="_blank" rel="noopener noreferrer">Join on Zoom<span class="sr-only"> (opens in new tab)</span></a></li>`);
         }
         if (row.host) {
-            details.push(`<li><i class="far fa-user"></i> Hosted by ${e(row.host)}</li>`);
+            details.push(`<li><i aria-hidden="true" class="far fa-user"></i> Hosted by ${e(row.host)}</li>`);
         }
 
         const calendar = start && end ? `
             <div class="talk-calendar mt-3">
-                <a class="btn btn-sm talk-btn" href="${this.googleCalendarUrl(row, start, end)}" target="_blank" rel="noopener noreferrer">Add to Google Calendar</a>
-                <a class="btn btn-sm talk-btn" href="${this.icsUrl(row, start, end)}" download="${this.talkId(row)}.ics">Download .ics</a>
+                <a class="btn btn-sm talk-btn" href="${this.googleCalendarUrl(row, start, end)}" target="_blank" rel="noopener noreferrer">Add to Google Calendar<span class="sr-only"> (opens in new tab)</span></a>
+                <a class="btn btn-sm talk-btn" href="${this.icsUrl(row, start, end)}" download="${this.talkId(row)}.ics">Download calendar file (.ics)</a>
             </div>` : '';
 
         const photo = row.photo
@@ -143,19 +146,19 @@ const TalkPage = {
             : '';
 
         $('#talk').html(`
+            <p class="talk-back"><a class="text-link" href="/#seminar">&larr; All seminars</a></p>
             <p class="talk-kicker">${e(Utils.formatSemesterName(row.semester))} HCI Seminar</p>
             <h1 class="h2 talk-title">${e(row.title || 'Title to be announced')}</h1>
-            <div class="row mt-4">
-                <div class="col-md-8">
-                    <p class="talk-speaker">${speaker}${row.affiliation ? `, ${e(row.affiliation)}` : ''}</p>
+            <div class="row mt-3">
+                <div class="${photo ? 'col-md-8' : 'col-12'} talk-body">
+                    <p class="talk-speaker">${row.name ? `${speaker}${row.affiliation ? `, ${e(row.affiliation)}` : ''}` : 'Speaker to be announced'}</p>
                     <ul class="list-unstyled talk-details">${details.join('')}</ul>
                     ${calendar}
                     ${section('Abstract', row.abstract)}
                     ${section('Bio', row.bio)}
                 </div>
-                <div class="col-md-4">${photo}</div>
+                ${photo ? `<div class="col-md-4">${photo}</div>` : ''}
             </div>
-            <p class="mt-5"><a class="text-link" href="/#seminar">&larr; All seminars</a></p>
         `);
     },
 

@@ -72,8 +72,20 @@
 }
 
 /* People cards: consistent name row + link rows */
+/* Every person card is the same component: square photo on top, colored
+   footer that stretches so all cards in a row share one height */
+.person-card {
+  display: flex;
+  flex-direction: column;
+}
+.person-card .rect-img-container {
+  flex-shrink: 0;
+}
 .person-card-footer {
-  padding: 0.5rem 0.75rem 0.75rem 0.75rem;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  padding: 0.75rem;
 }
 
 .person-name-row {
@@ -92,7 +104,6 @@
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
-  min-height: 2.4em; /* keep faculty cards consistent even with short lab names */
 }
 
 .person-link {
@@ -166,7 +177,7 @@ footer {
 }
 @media screen and (max-width: 575px) {
   footer::after {
-    background: rgba(0, 56, 101, 0.72);
+    background: rgba(0, 56, 101, 0.84);
   }
 }
 
@@ -497,7 +508,13 @@ h3.h4 {
   font-weight: 500;
 }
 .talk-details li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
   margin-bottom: 0.4rem;
+}
+.talk-details i {
+  flex-shrink: 0;
 }
 .talk-details i {
   width: 1.25rem;
@@ -505,12 +522,13 @@ h3.h4 {
 }
 .talk-btn {
   border: 1px solid #003865;
-  color: #003865;
+  color: #003865 !important;
   margin: 0 0.5rem 0.5rem 0;
 }
-.talk-btn:hover {
+.talk-btn:hover,
+.talk-btn:focus-visible {
   background-color: #003865;
-  color: #ffffff;
+  color: #ffffff !important;
 }
 .talk-photo {
   width: 100%;
@@ -519,24 +537,413 @@ h3.h4 {
 }
 
 #talk {
-  padding-top: 6rem !important;
+  padding-top: 7rem;
+  padding-bottom: 4rem;
+  min-height: calc(100vh - 290px); /* keep the footer at the bottom on short talk pages */
+}
+.talk-back {
+  font-size: 0.95rem;
+  margin-bottom: 2rem;
+}
+.talk-title {
+  max-width: 46rem;
+}
+.talk-body {
+  max-width: 46rem; /* comfortable line length for abstracts and bios */
 }
 #seminarsContainer li {
   margin-bottom: 0.3rem;
 }
-#seminarsContainer .seminar-speaker,
 .text-link {
   color: #003865 !important;
   text-decoration: underline !important;
   text-decoration-thickness: 1px !important;
   text-underline-offset: 3px;
 }
-#seminarsContainer .seminar-speaker:hover,
-#seminarsContainer .seminar-title:hover,
 .text-link:hover {
-  color: #247AA9 !important;
+  color: #1B5C80 !important;
 }
-#seminarsContainer .seminar-title:hover {
+#seminarsContainer .seminar-row,
+#seminarsContainer .seminar-row:hover {
+  display: inline-block;
+  padding: 0.1rem 0;
+  font-weight: 300 !important; /* the global a:hover weight change would make the line jump */
+}
+#seminarsContainer .seminar-row b {
+  font-weight: 600;
+}
+#seminarsContainer .seminar-speaker {
+  color: #003865;
+}
+#seminarsContainer .seminar-row:hover,
+#seminarsContainer .seminar-row:focus-visible {
+  text-decoration: underline !important;
+  text-underline-offset: 3px;
+}
+#seminarsContainer .seminar-row:hover .seminar-speaker,
+#seminarsContainer .seminar-row:focus-visible .seminar-speaker {
+  color: #1B5C80;
+}
+
+/* Bright card colors (gold) use navy text so it stays readable */
+.card-light .person-name-link,
+.card-light .person-link {
+  color: #000000 !important;
+}
+.card-light svg {
+  fill: #000000 !important;
+}
+
+/* Bootstrap lightens .text-white links on hover, which washes out on the blue card */
+.card a.text-white:hover,
+.card a.text-white:focus {
+  color: #ffffff !important;
   text-decoration: underline !important;
 }
 
+/* ------------------------------------------------------------------
+   Readability and accessibility
+   Colors meet 7:1 (WCAG AAA) by default; the navbar display settings
+   (js/main.js, DisplayPrefs) add theme and html[data-text] size steps.
+   ------------------------------------------------------------------ */
+
+/* Small text uses Regular instead of Light so it stays legible */
+.person-link,
+.footer-small,
+.footer-note {
+  font-weight: 400 !important;
+}
+.person-link {
+  font-size: 0.85rem;
+}
+/* 24px minimum target height (WCAG 2.5.8) for the stacked card links */
+.person-name-link,
+.person-link {
+  min-height: 24px;
+  padding: 2px 0;
+}
+.alumni-groups {
+  width: 100%;
+  padding: 0 15px;
+}
+.alumni-group {
+  margin-bottom: 1.5rem;
+}
+.alumni-heading {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+.alumni-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  columns: 15rem;
+  column-gap: 2rem;
+}
+.alumni-list li {
+  break-inside: avoid;
+  font-size: 0.95rem;
+  font-weight: 400;
+  padding: 0.15rem 0;
+}
+.alumni-list .text-link {
+  display: inline-block;
+  min-height: 24px;
+}
+.alumni-year {
+  color: #4a5058;
+}
+html[data-theme="dark"] .alumni-year {
+  color: #c4c9d0;
+}
+.footer-small {
+  font-size: 0.9rem;
+}
+.footer-note {
+  display: inline-block;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  margin-top: 0.5rem;
+}
+
+/* Targets: at least 24px (WCAG 2.5.8) without changing the layout;
+   icon-only footer links get a 44px hit area */
+#seminarsContainer .seminar-row {
+  min-height: 24px;
+}
+.semester-tab,
+.year-tab {
+  min-height: 36px;
+}
+.talk-btn {
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+}
+.navbar-toggler {
+  min-width: 44px;
+  min-height: 44px;
+}
+footer a[aria-label] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+}
+
+/* Visible keyboard focus; currentColor reads on white, navy, and cards */
+a:focus-visible,
+button:focus-visible,
+[role="tabpanel"]:focus-visible {
+  outline: 3px solid currentColor !important;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+    scroll-behavior: auto !important;
+  }
+  .zoom:hover {
+    transform: none;
+  }
+}
+
+/* Display settings (navbar button + panel) */
+.display-settings {
+  position: relative;
+  margin-left: auto;
+  margin-right: 0.5rem;
+}
+@media (min-width: 992px) {
+  .display-settings {
+    order: 3;
+    margin-right: 0;
+    margin-left: 1rem;
+  }
+}
+.display-toggle {
+  min-width: 44px;
+  min-height: 44px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: #003865;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+.display-toggle:hover,
+.display-toggle[aria-expanded="true"] {
+  background-color: #e6ebf2;
+}
+.display-panel {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 6px);
+  z-index: 1050;
+  width: 15rem;
+  padding: 0.75rem 1rem;
+  background: #ffffff;
+  color: #212529;
+  border: 1px solid #c8d0da;
+  border-radius: 8px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
+}
+.display-panel fieldset {
+  margin: 0 0 0.75rem;
+  padding: 0;
+  border: 0;
+}
+.display-panel legend {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+}
+.display-panel label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 32px;
+  margin: 0;
+  font-weight: 400;
+  cursor: pointer;
+}
+.display-panel input {
+  width: 1.1rem;
+  height: 1.1rem;
+  accent-color: #003865;
+}
+
+/* Text size steps: everything is rem-based, so the whole page scales */
+html[data-text="112"] { font-size: 112.5%; }
+html[data-text="125"] { font-size: 125%; }
+html[data-text="150"] { font-size: 150%; }
+
+/* ------------------------------------------------------------------
+   Dark theme: follows the system setting by default ("System" in the
+   display panel); the head script sets html[data-theme] before paint.
+   Text is at least 7:1 on the dark surfaces.
+   ------------------------------------------------------------------ */
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --tertiary-color: #232830;
+}
+html[data-theme="dark"] body,
+html[data-theme="dark"] .page-content {
+  background-color: #111418;
+  color: #e7e9ec;
+}
+html[data-theme="dark"] h1,
+html[data-theme="dark"] h2,
+html[data-theme="dark"] h3,
+html[data-theme="dark"] h4,
+html[data-theme="dark"] p,
+html[data-theme="dark"] li,
+html[data-theme="dark"] .font-weight-normal {
+  color: #e7e9ec;
+}
+html[data-theme="dark"] a {
+  color: #e7e9ec !important;
+}
+html[data-theme="dark"] .bg-light,
+html[data-theme="dark"] .navbar {
+  background-color: #1b1f24 !important;
+}
+html[data-theme="dark"] .nav-link {
+  color: #e7e9ec !important;
+  background-color: transparent;
+}
+html[data-theme="dark"] .nav-link:hover {
+  background-color: #2a3038;
+}
+html[data-theme="dark"] .navbar-light .navbar-toggler-icon {
+  filter: invert(1);
+}
+html[data-theme="dark"] .navbar-light .navbar-toggler {
+  border-color: #5b6470;
+}
+html[data-theme="dark"] .img-logo {
+  filter: brightness(0) invert(1);
+}
+html[data-theme="dark"] .display-toggle {
+  color: #e7e9ec;
+}
+html[data-theme="dark"] .display-toggle:hover,
+html[data-theme="dark"] .display-toggle[aria-expanded="true"] {
+  background-color: #2a3038;
+}
+html[data-theme="dark"] .display-panel {
+  background: #1b1f24;
+  color: #e7e9ec;
+  border-color: #3a414b;
+}
+html[data-theme="dark"] .display-panel input {
+  accent-color: #8fc3ff;
+}
+html[data-theme="dark"] .semester-tab,
+html[data-theme="dark"] .year-tab,
+html[data-theme="dark"] #seminarsContainer .seminar-speaker,
+html[data-theme="dark"] .talk-kicker,
+html[data-theme="dark"] .talk-title,
+html[data-theme="dark"] .talk-details i {
+  color: #8fc3ff;
+}
+html[data-theme="dark"] .semester-tabs,
+html[data-theme="dark"] .year-tabs {
+  border-color: #3a414b;
+}
+html[data-theme="dark"] .text-link,
+html[data-theme="dark"] .talk-btn {
+  color: #8fc3ff !important;
+  border-color: #8fc3ff;
+}
+html[data-theme="dark"] .text-link:hover,
+html[data-theme="dark"] #seminarsContainer .seminar-row:hover .seminar-speaker {
+  color: #c4e0ff !important;
+}
+html[data-theme="dark"] .talk-btn:hover,
+html[data-theme="dark"] .talk-btn:focus-visible {
+  background-color: #8fc3ff;
+  color: #111418 !important;
+}
+html[data-theme="dark"] .conference h3,
+html[data-theme="dark"] .conference h4 {
+  border-color: #5b6470;
+}
+/* Card text stays white/navy on its colored block */
+html[data-theme="dark"] .person-name-link,
+html[data-theme="dark"] .person-link {
+  color: #ffffff !important;
+}
+html[data-theme="dark"] .card-light .person-name-link,
+html[data-theme="dark"] .card-light .person-link {
+  color: #000000 !important;
+}
+html[data-theme="dark"] .card .text-white,
+html[data-theme="dark"] .card p,
+html[data-theme="dark"] footer a {
+  color: #ffffff !important;
+}
+html[data-theme="dark"] footer {
+  background-color: #0b1a2b;
+}
+html[data-theme="dark"] #footerImage {
+  background-color: #0b1a2b !important;
+}
+
+/* People sub-section labels: real headings, same look as before */
+.people-label {
+  font-size: 1rem;
+  font-weight: 500 !important;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+/* The hosting card keeps white text on its blue background in every theme */
+html[data-theme="dark"] .card h3,
+html[data-theme="dark"] .card .card-body {
+  color: #ffffff !important;
+}
+
+/* Reflow at large text sizes on narrow screens (WCAG 1.4.10) */
+h1,
+h2 {
+  overflow-wrap: break-word;
+}
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.75rem;
+  }
+  h2:not(.people-label) {
+    font-size: 1.5rem;
+  }
+}
+/* Screen-reader-only text must not widen the page */
+.sr-only {
+  left: 0;
+  top: 0;
+}
+/* Two card columns are too narrow for names at the larger text sizes */
+@media (max-width: 575px) {
+  html[data-text="125"] #about-labs > div,
+  html[data-text="125"] #people-section > div,
+  html[data-text="125"] #ms-students-section > div,
+  html[data-text="150"] #about-labs > div,
+  html[data-text="150"] #people-section > div,
+  html[data-text="150"] #ms-students-section > div {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
+.person-name-link,
+.person-link {
+  overflow-wrap: break-word;
+}
