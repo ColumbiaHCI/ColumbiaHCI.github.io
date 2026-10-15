@@ -783,7 +783,7 @@ button:focus-visible,
 }
 
 /* Text size steps: everything is rem-based, so the whole page scales */
-html[data-text="112"] { font-size: 112.5%; }
+html[data-text="110"] { font-size: 110%; }
 html[data-text="125"] { font-size: 125%; }
 html[data-text="150"] { font-size: 150%; }
 
@@ -946,4 +946,31 @@ h2 {
 .person-name-link,
 .person-link {
   overflow-wrap: break-word;
+}
+
+/* Skip link: first Tab stop, hidden until focused, jumps past the navbar */
+.skip-link {
+  position: absolute;
+  left: 0.5rem;
+  top: -100px;
+  z-index: 2000;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  background: #003865;
+  color: #ffffff !important;
+  font-weight: 600;
+  text-decoration: underline !important;
+}
+.skip-link:focus,
+.skip-link:focus-visible {
+  top: 0.5rem;
+  outline: 3px solid #ffffff !important;
+  outline-offset: 0;
+  box-shadow: 0 0 0 5px #003865;
+}
+html[data-theme="dark"] .skip-link {
+  color: #ffffff !important;
+}
+#main-content:focus {
+  outline: none;
 }
