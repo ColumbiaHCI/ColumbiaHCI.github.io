@@ -814,7 +814,8 @@ const DisplayPrefs = {
         if (!button.length) return;
 
         const theme = this.read('hci-theme') || 'system';
-        const text = this.read('hci-text') || '100';
+        let text = this.read('hci-text') || '100';
+        if (text === '112') text = '110'; // earlier "Large" step
         panel.find(`input[name="hci-theme"][value="${theme}"]`).prop('checked', true);
         panel.find(`input[name="hci-text"][value="${text}"]`).prop('checked', true);
 
