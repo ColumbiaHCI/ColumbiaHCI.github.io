@@ -14,6 +14,10 @@ const TalkPage = {
         return `${row.semester}-${(row.date || '').replace('/', '-')}`;
     },
 
+    splitList(value) {
+        return (value || '').split(';;').map(x => x.trim()).filter(Boolean);
+    },
+
     escape(text) {
         return $('<div>').text(text || '').html();
     },
@@ -141,25 +145,114 @@ const TalkPage = {
             ? `<img class="talk-photo mb-3" src="${CONFIG.paths.headshots}${e(row.photo)}" alt="${e(row.name)}">`
             : '';
 
+        // Optional photos from the session: "file.jpg|Alt text|Caption ;; ..." in media/seminars/
+        const photos = this.splitList(row.gallery).map(item => {
+            const [file, alt, caption] = item.split('|').map(x => (x || '').trim());
+            return `<figure class="talk-gallery-item"><button type="button" class="talk-gallery-open" aria-haspopup="dialog" aria-label="Enlarge photo: ${e(alt)}" data-src="media/seminars/${e(file)}" data-alt="${e(alt)}" data-caption="${e(caption || '')}"><img src="media/seminars/${e(file)}" alt="" loading="lazy"></button>${caption ? `<figcaption>${e(caption)}</figcaption>` : ''}</figure>`;
+        });
+
+        // Optional multi-talk sessions: "Name|URL|Title|Summary ;; ..."
+        // When there is one photo per talk, each photo sits beside its talk.
+        const talkItems = this.splitList(row.talks);
+        const paired = talkItems.length > 0 && photos.length === talkItems.length;
+        const talks = talkItems.map((item, i) => {
+            const [name, url, title, summary] = item.split('|').map(x => (x || '').trim());
+            const who = url
+                ? `<a class="text-link" href="${e(url)}" target="_blank" rel="noopener noreferrer">${e(name)}<span class="sr-only"> (opens in new tab)</span></a>`
+                : e(name);
+            const text = `<div class="talk-item-text"><h3 class="h5 talk-item-title">${e(title)}</h3><p class="talk-item-speaker">${who}</p>${summary ? `<p>${e(summary)}</p>` : ''}</div>`;
+            return `<li class="talk-item${paired ? ' talk-item-paired' : ''}">${text}${paired ? photos[i] : ''}</li>`;
+        });
+        const talksSection = talks.length
+            ? `<h2 class="h4 mt-4">Talks</h2><ul class="list-unstyled talk-list">${talks.join('')}</ul>` : '';
+
+        const viewer = photos.length ? `
+               <dialog class="photo-viewer" aria-label="Photo viewer">
+                 <button type="button" class="photo-viewer-close">Close <span aria-hidden="true">&times;</span></button>
+                 <figure class="photo-viewer-figure">
+                   <img class="photo-viewer-img" src="" alt="">
+                   <figcaption class="photo-viewer-caption"></figcaption>
+                 </figure>
+                 <div class="photo-viewer-nav">
+                   <button type="button" class="photo-viewer-prev"><span aria-hidden="true">&larr;</span> Previous photo</button>
+                   <span class="photo-viewer-count" aria-live="polite"></span>
+                   <button type="button" class="photo-viewer-next">Next photo <span aria-hidden="true">&rarr;</span></button>
+                 </div>
+               </dialog>` : '';
+        const gallerySection = (photos.length && !paired
+            ? `<h2 class="h4 mt-4">Photos</h2><div class="talk-gallery">${photos.join('')}</div>` : '') + viewer;
+
+        // Upcoming single-speaker talks show placeholders until the speaker sends details
+        const upcoming = day && new Date(day.year, day.month - 1, day.day, 23, 59) >= new Date();
+        const pending = upcoming && !talks.length;
         const section = (heading, text) => text
             ? `<h2 class="h4 mt-4">${heading}</h2>${text.split(/\n\s*\n/).map(p => `<p>${e(p)}</p>`).join('')}`
-            : '';
+            : (pending ? `<h2 class="h4 mt-4">${heading}</h2><p class="talk-pending">To be announced</p>` : '');
 
         $('#talk').html(`
             <p class="talk-back"><a class="text-link" href="/#seminar">&larr; All seminars</a></p>
             <p class="talk-kicker">${e(Utils.formatSemesterName(row.semester))} HCI Seminar</p>
-            <h1 class="h2 talk-title">${e(row.title || 'Title to be announced')}</h1>
+            <h1 class="h2 talk-title">${e(row.title || (talks.length ? row.name : 'Title to be announced'))}</h1>
             <div class="row mt-3">
-                <div class="${photo ? 'col-md-8' : 'col-12'} talk-body">
-                    <p class="talk-speaker">${row.name ? `${speaker}${row.affiliation ? `, ${e(row.affiliation)}` : ''}` : 'Speaker to be announced'}</p>
+                <div class="${photo ? 'col-md-8' : 'col-12'} talk-body${paired ? ' talk-body-wide' : ''}">
+                    ${!row.title && talks.length
+                        ? (row.affiliation ? `<p class="talk-speaker">${e(row.affiliation)}</p>` : '')
+                        : `<p class="talk-speaker">${row.name ? `${speaker}${row.affiliation ? `, ${e(row.affiliation)}` : ''}` : 'Speaker to be announced'}</p>`}
                     <ul class="list-unstyled talk-details">${details.join('')}</ul>
                     ${calendar}
+                    ${talksSection}
                     ${section('Abstract', row.abstract)}
                     ${section('Bio', row.bio)}
+                    ${gallerySection}
                 </div>
                 ${photo ? `<div class="col-md-4">${photo}</div>` : ''}
             </div>
         `);
+    },
+
+    /**
+     * Click-to-enlarge photo viewer on a native modal <dialog>: the browser
+     * traps focus, closes on Escape, and returns focus to the opening button.
+     * Clicking the dimmed area outside the photo also closes it.
+     */
+    bindPhotoViewer() {
+        const dialog = document.querySelector('.photo-viewer');
+        if (!dialog || typeof dialog.showModal !== 'function') return;
+        const buttons = [...document.querySelectorAll('.talk-gallery-open')];
+        const img = dialog.querySelector('.photo-viewer-img');
+        const caption = dialog.querySelector('.photo-viewer-caption');
+        const count = dialog.querySelector('.photo-viewer-count');
+        const nav = dialog.querySelector('.photo-viewer-nav');
+        let index = 0;
+
+        const show = (i) => {
+            index = (i + buttons.length) % buttons.length;
+            const b = buttons[index].dataset;
+            img.src = b.src;
+            img.alt = b.alt;
+            caption.textContent = b.caption;
+            caption.hidden = !b.caption;
+            count.textContent = `Photo ${index + 1} of ${buttons.length}`;
+        };
+
+        nav.hidden = buttons.length < 2;
+        buttons.forEach((button, i) => button.addEventListener('click', () => {
+            show(i);
+            document.documentElement.classList.add('viewer-open');
+            dialog.showModal();
+            dialog.querySelector('.photo-viewer-close').focus();
+        }));
+        dialog.querySelector('.photo-viewer-close').addEventListener('click', () => dialog.close());
+        dialog.querySelector('.photo-viewer-prev').addEventListener('click', () => show(index - 1));
+        dialog.querySelector('.photo-viewer-next').addEventListener('click', () => show(index + 1));
+        dialog.addEventListener('keydown', (event) => {
+            if (buttons.length < 2) return;
+            if (event.key === 'ArrowLeft') { event.preventDefault(); show(index - 1); }
+            if (event.key === 'ArrowRight') { event.preventDefault(); show(index + 1); }
+        });
+        // A click on the backdrop lands on the <dialog> element itself
+        dialog.addEventListener('click', (event) => { if (event.target === dialog) dialog.close(); });
+        dialog.addEventListener('close', () => document.documentElement.classList.remove('viewer-open'));
     },
 
     init() {
@@ -175,6 +268,7 @@ const TalkPage = {
                     return;
                 }
                 this.render(row);
+                this.bindPhotoViewer();
             },
             error: () => $('#talk').html('<p>Could not load seminar data.</p>')
         });

@@ -619,7 +619,8 @@ setPublicationYear(year, groupedPublications) {
                 description: row.description || '',
                 time: row.time || '',
                 location: row.location || '',
-                abstract: row.abstract || ''
+                abstract: row.abstract || '',
+                talks: row.talks || ''
             });
         });
         
@@ -730,11 +731,14 @@ setPublicationYear(year, groupedPublications) {
             const speaker = seminar.name
                 ? `<span class="seminar-speaker">${seminar.name}</span>`
                 : 'Speaker to be announced';
-            const title = seminar.title ? `"${seminar.title}"` : 'Title to be announced';
+            // A session of several short talks has a plain label, not a quoted talk title
+            const title = seminar.title
+                ? (seminar.talks ? `: ${seminar.title}` : `: "${seminar.title}"`)
+                : (seminar.talks ? '' : ': Title to be announced');
             const description = seminar.description ? ` - ${seminar.description}` : '';
 
             // One link per talk: the whole line opens its talk page
-            html += `<a href="${talkUrl}" class="seminar-row"><b>${seminar.date} - ${speaker}</b>: ${title}${description}</a>`;
+            html += `<a href="${talkUrl}" class="seminar-row"><b>${seminar.date} - ${speaker}</b>${title}${description}</a>`;
             
             html += '</li>';
         });
