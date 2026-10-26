@@ -1157,3 +1157,10 @@ html.viewer-open {
     gap: 0.75rem;
   }
 }
+
+/* On phones the speaker photo sits under their name, above the talk details */
+.talk-photo-mobile .talk-photo {
+  width: 10rem;
+  max-width: 45%;
+  border-radius: 6px;
+}
