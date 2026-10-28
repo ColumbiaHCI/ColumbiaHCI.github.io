@@ -991,8 +991,13 @@ html[data-theme="dark"] .skip-link {
 }
 .talk-gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr)); /* even 2-up grid */
+  gap: 1.25rem 1rem;
+}
+@media (max-width: 575px) {
+  .talk-gallery {
+    grid-template-columns: 1fr;
+  }
 }
 .talk-gallery-item {
   margin: 0;
