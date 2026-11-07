@@ -197,7 +197,7 @@ const TalkPage = {
                 <div class="talk-header">
                     ${!row.title && talks.length
                         ? (row.affiliation ? `<p class="talk-speaker">${e(row.affiliation)}</p>` : '')
-                        : `<p class="talk-speaker">${row.name ? `${speaker}${row.affiliation ? `, ${e(row.affiliation)}` : ''}` : 'Speaker to be announced'}</p>`}
+                        : `<p class="talk-speaker">${row.name ? `${speaker}${row.affiliation ? `<span class="talk-affiliation">${e(row.affiliation)}</span>` : ''}` : 'Speaker to be announced'}</p>`}
                     ${photo ? `<div class="talk-photo-mobile d-md-none">${photo}</div>` : ''}
                     <ul class="list-unstyled talk-details">${details.join('')}</ul>
                     ${calendar}
