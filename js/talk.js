@@ -193,20 +193,23 @@ const TalkPage = {
             <p class="talk-back"><a class="text-link" href="/#seminar">&larr; All seminars</a></p>
             <p class="talk-kicker">${e(Utils.formatSemesterName(row.semester))} HCI Seminar</p>
             <h1 class="h2 talk-title">${e(row.title || (talks.length ? row.name : 'Title to be announced'))}</h1>
-            <div class="row mt-3">
-                <div class="${photo ? 'col-md-8' : 'col-12'} talk-body${paired ? ' talk-body-wide' : ''}">
+            <div class="talk-header-row mt-3">
+                <div class="talk-header">
                     ${!row.title && talks.length
                         ? (row.affiliation ? `<p class="talk-speaker">${e(row.affiliation)}</p>` : '')
-                        : `<p class="talk-speaker">${row.name ? `${speaker}${row.affiliation ? `, ${e(row.affiliation)}` : ''}` : 'Speaker to be announced'}</p>`}
+                        : `<p class="talk-speaker">${row.name ? `${speaker}${row.affiliation ? `<span class="talk-affiliation">${e(row.affiliation)}</span>` : ''}` : 'Speaker to be announced'}</p>`}
                     ${photo ? `<div class="talk-photo-mobile d-md-none">${photo}</div>` : ''}
                     <ul class="list-unstyled talk-details">${details.join('')}</ul>
                     ${calendar}
-                    ${talksSection}
-                    ${section('Abstract', row.abstract)}
-                    ${section('Bio', row.bio)}
-                    ${gallerySection}
                 </div>
-                ${photo ? `<div class="col-md-4 d-none d-md-block">${photo}</div>` : ''}
+                ${photo ? `<div class="talk-header-photo d-none d-md-block">${photo}</div>` : ''}
+            </div>
+            <!-- Long text runs below the photo row so the photo column never trails off into empty space -->
+            <div class="talk-body${paired ? ' talk-body-wide' : ''}">
+                ${talksSection}
+                ${section('Abstract', row.abstract)}
+                ${section('Bio', row.bio)}
+                ${gallerySection}
             </div>
         `);
     },

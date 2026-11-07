@@ -15,6 +15,10 @@
 	--background-without-opacity: rgba(255, 255, 255, 0.7);
 	--column-width: 42rem;
 	--column-margin-top: 4rem;
+	/* Site blues, redefined for dark mode below: text and accents, their hover, and filled blue panels */
+	--blue: #003865;
+	--blue-hover: #1B5C80;
+	--blue-surface: #003865;
 }
 
 #videoBackground {
@@ -97,7 +101,7 @@
   font-size: 1rem;
   font-weight: 600 !important;
   display: block;
-  line-height: 1.2;
+  line-height: 1.35;
 }
 
 .person-links-row {
@@ -111,7 +115,7 @@
   font-size: 0.8rem;
   font-weight: 300 !important;
   display: block;
-  line-height: 1.2;
+  line-height: 1.35;
 }
 
 .person-link svg {
@@ -172,12 +176,12 @@ footer {
     position: absolute;
     inset: 0;
     z-index: -1;
-    background: linear-gradient(90deg, #003865 0%, #003865 40%, rgba(0, 56, 101, 0) 65%);
+    background: linear-gradient(90deg, var(--blue-surface) 0%, var(--blue-surface) 40%, transparent 65%);
   }
 }
 @media screen and (max-width: 575px) {
   footer::after {
-    background: rgba(0, 56, 101, 0.84);
+    background: color-mix(in srgb, var(--blue-surface) 84%, transparent);
   }
 }
 
@@ -381,7 +385,7 @@ h3.h4 {
   background: transparent;
   border: 0;
   padding: 6px 2px;
-  color: #003865;
+  color: var(--blue);
   font-weight: 400;
   letter-spacing: 0.2px;
   cursor: pointer;
@@ -413,7 +417,7 @@ h3.h4 {
   right: 0;
   bottom: -7px;
   height: 3px;
-  background: #379DD4;
+  background: var(--blue);
   border-radius: 999px;
 }
 
@@ -431,7 +435,7 @@ h3.h4 {
   background: transparent;
   border: 0;
   padding: 6px 2px;
-  color: #003865;
+  color: var(--blue);
   font-weight: 400;
   letter-spacing: 0.2px;
   cursor: pointer;
@@ -463,7 +467,7 @@ h3.h4 {
   right: 0;
   bottom: -7px;
   height: 3px;
-  background: #379DD4;
+  background: var(--blue);
   border-radius: 999px;
 }
 
@@ -494,18 +498,24 @@ h3.h4 {
 }
 /* Talk detail page */
 .talk-kicker {
-  color: #003865;
+  color: var(--blue);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin-bottom: 0.25rem;
 }
 .talk-title {
-  color: #003865;
+  color: var(--blue);
 }
 .talk-speaker {
   font-size: 1.25rem;
   font-weight: 500;
+}
+/* School sits on its own line under the speaker's name */
+.talk-affiliation {
+  display: block;
+  font-size: 1.125rem;
+  font-weight: 400;
 }
 .talk-details li {
   display: flex;
@@ -518,22 +528,25 @@ h3.h4 {
 }
 .talk-details i {
   width: 1.25rem;
-  color: #003865;
+  color: var(--blue);
 }
 .talk-btn {
-  border: 1px solid #003865;
-  color: #003865 !important;
+  border: 1px solid var(--blue);
+  color: var(--blue) !important;
   margin: 0 0.5rem 0.5rem 0;
 }
 .talk-btn:hover,
 .talk-btn:focus-visible {
-  background-color: #003865;
+  background-color: var(--blue);
   color: #ffffff !important;
 }
 .talk-photo {
   width: 100%;
   max-width: 280px;
   height: auto;
+  aspect-ratio: 1 / 1; /* same frame for every speaker, whatever the photo's shape */
+  object-fit: cover;
+  object-position: center 20%;
 }
 
 #talk {
@@ -549,19 +562,41 @@ h3.h4 {
   max-width: 46rem;
 }
 .talk-body {
-  max-width: 46rem; /* comfortable line length for abstracts and bios */
+  max-width: 46rem;
+}
+/* Speaker details with the photo right beside them, together no wider than the reading text */
+.talk-header-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 2rem;
+  max-width: 44rem;
+}
+.talk-header {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.talk-header-photo {
+  flex: 0 0 12rem;
+}
+/* Reading text: a little larger, and narrow enough to stay under ~80 characters a line */
+.talk-body > p,
+.talk-item p,
+#seminar p {
+  font-size: 1.125rem;
+  max-width: 38rem;
+  text-wrap: pretty;
 }
 #seminarsContainer li {
   margin-bottom: 0.3rem;
 }
 .text-link {
-  color: #003865 !important;
+  color: var(--blue) !important;
   text-decoration: underline !important;
   text-decoration-thickness: 1px !important;
   text-underline-offset: 3px;
 }
 .text-link:hover {
-  color: #1B5C80 !important;
+  color: var(--blue-hover) !important;
 }
 #seminarsContainer .seminar-row,
 #seminarsContainer .seminar-row:hover {
@@ -573,7 +608,7 @@ h3.h4 {
   font-weight: 600;
 }
 #seminarsContainer .seminar-speaker {
-  color: #003865;
+  color: var(--blue);
 }
 #seminarsContainer .seminar-row:hover,
 #seminarsContainer .seminar-row:focus-visible {
@@ -582,7 +617,7 @@ h3.h4 {
 }
 #seminarsContainer .seminar-row:hover .seminar-speaker,
 #seminarsContainer .seminar-row:focus-visible .seminar-speaker {
-  color: #1B5C80;
+  color: var(--blue-hover);
 }
 
 /* Bright card colors (gold) use navy text so it stays readable */
@@ -628,6 +663,9 @@ h3.h4 {
 }
 .alumni-group {
   margin-bottom: 1.5rem;
+}
+.alumni-group:last-child {
+  margin-bottom: 0; /* the next section brings its own spacing */
 }
 .alumni-heading {
   font-size: 1rem;
@@ -734,7 +772,7 @@ button:focus-visible,
   border: 1px solid transparent;
   border-radius: 6px;
   background: transparent;
-  color: #003865;
+  color: var(--blue);
   font-size: 1.1rem;
   cursor: pointer;
 }
@@ -779,7 +817,7 @@ button:focus-visible,
 .display-panel input {
   width: 1.1rem;
   height: 1.1rem;
-  accent-color: #003865;
+  accent-color: var(--blue);
 }
 
 /* Text size steps: everything is rem-based, so the whole page scales */
@@ -795,6 +833,9 @@ html[data-text="150"] { font-size: 150%; }
 html[data-theme="dark"] {
   color-scheme: dark;
   --tertiary-color: #232830;
+  --blue: #8fc3ff;
+  --blue-hover: #c4e0ff;
+  --blue-surface: #14335a;
 }
 html[data-theme="dark"] body,
 html[data-theme="dark"] .page-content {
@@ -846,7 +887,7 @@ html[data-theme="dark"] .display-panel {
   border-color: #3a414b;
 }
 html[data-theme="dark"] .display-panel input {
-  accent-color: #8fc3ff;
+  accent-color: var(--blue);
 }
 html[data-theme="dark"] .semester-tab,
 html[data-theme="dark"] .year-tab,
@@ -854,7 +895,7 @@ html[data-theme="dark"] #seminarsContainer .seminar-speaker,
 html[data-theme="dark"] .talk-kicker,
 html[data-theme="dark"] .talk-title,
 html[data-theme="dark"] .talk-details i {
-  color: #8fc3ff;
+  color: var(--blue);
 }
 html[data-theme="dark"] .semester-tabs,
 html[data-theme="dark"] .year-tabs {
@@ -862,16 +903,16 @@ html[data-theme="dark"] .year-tabs {
 }
 html[data-theme="dark"] .text-link,
 html[data-theme="dark"] .talk-btn {
-  color: #8fc3ff !important;
-  border-color: #8fc3ff;
+  color: var(--blue) !important;
+  border-color: var(--blue);
 }
 html[data-theme="dark"] .text-link:hover,
 html[data-theme="dark"] #seminarsContainer .seminar-row:hover .seminar-speaker {
-  color: #c4e0ff !important;
+  color: var(--blue-hover) !important;
 }
 html[data-theme="dark"] .talk-btn:hover,
 html[data-theme="dark"] .talk-btn:focus-visible {
-  background-color: #8fc3ff;
+  background-color: var(--blue);
   color: #111418 !important;
 }
 html[data-theme="dark"] .conference h3,
@@ -893,18 +934,83 @@ html[data-theme="dark"] footer a {
   color: #ffffff !important;
 }
 html[data-theme="dark"] footer {
-  background-color: #0b1a2b;
+  background-color: var(--blue-surface);
 }
-html[data-theme="dark"] #footerImage {
-  background-color: #0b1a2b !important;
+#footerImage {
+  background-color: var(--blue-surface);
 }
 
-/* People sub-section labels: real headings, same look as before */
+/* People sub-section labels: larger than the reading text around them so each group is easy to spot */
 .people-label {
-  font-size: 1rem;
-  font-weight: 500 !important;
+  font-size: 1.25rem;
+  font-weight: 600 !important;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
+  margin-top: 2rem;
   margin-bottom: 1rem;
+}
+/* Major sections sit 4rem apart; jumping to one from the menu stops just below the fixed navbar */
+.page-section {
+  padding-top: 0;
+  margin-top: 4rem;
+}
+.page-section,
+#people {
+  scroll-margin-top: 6.5rem;
+}
+/* The intro above already gives the first group room */
+.container > .people-label:first-child {
+  margin-top: 0;
+}
+
+/* Hosting card: same blue panel as the footer, with its key facts as label/value lines */
+.hosting-card {
+  background-color: var(--blue-surface);
+}
+.hosting-facts {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.4rem 1.25rem;
+  max-width: 38rem;
+  font-size: 1.125rem;
+  margin: 1.25rem 0 0;
+}
+/* Action links: larger, underlined, with an arrow so they read as clickable */
+.hosting-links li + li {
+  margin-top: 0.6rem;
+}
+.hosting-links a {
+  font-size: 1.25rem;
+  text-decoration: underline !important;
+  text-decoration-thickness: 2px !important;
+  text-underline-offset: 4px;
+}
+.hosting-links a::after {
+  /* Right arrow after a no-break space, kept inline so it never wraps onto its own line */
+  content: "\00a0\2192";
+  position: relative;
+  left: 0;
+  transition: left 0.15s ease;
+}
+.hosting-links a:hover::after,
+.hosting-links a:focus-visible::after {
+  left: 3px;
+}
+.hosting-facts dt {
+  font-weight: 600;
+}
+.hosting-facts dd {
+  margin: 0;
+  text-wrap: pretty;
+}
+@media (max-width: 575px) {
+  .hosting-facts {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .hosting-facts dd {
+    margin-bottom: 0.6rem;
+  }
 }
 
 /* The hosting card keeps white text on its blue background in every theme */
@@ -956,7 +1062,7 @@ h2 {
   z-index: 2000;
   padding: 0.6rem 1rem;
   border-radius: 6px;
-  background: #003865;
+  background: var(--blue-surface);
   color: #ffffff !important;
   font-weight: 600;
   text-decoration: underline !important;
@@ -966,7 +1072,7 @@ h2 {
   top: 0.5rem;
   outline: 3px solid #ffffff !important;
   outline-offset: 0;
-  box-shadow: 0 0 0 5px #003865;
+  box-shadow: 0 0 0 5px var(--blue-surface);
 }
 html[data-theme="dark"] .skip-link {
   color: #ffffff !important;
@@ -1140,11 +1246,7 @@ html.viewer-open {
 
 /* Multi-talk sessions with one photo per talk: text left, that talk's photo right */
 .talk-body-wide {
-  max-width: 66rem;
-}
-.talk-body-wide > p,
-.talk-body-wide > ul.talk-details {
-  max-width: 46rem;
+  max-width: 57rem; /* 38rem of text, the gap, and the 17rem photo */
 }
 .talk-item-paired {
   display: grid;
