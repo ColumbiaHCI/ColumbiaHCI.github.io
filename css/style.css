@@ -534,6 +534,9 @@ h3.h4 {
   width: 100%;
   max-width: 280px;
   height: auto;
+  aspect-ratio: 1 / 1; /* same frame for every speaker, whatever the photo's shape */
+  object-fit: cover;
+  object-position: center 20%;
 }
 
 #talk {
