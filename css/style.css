@@ -581,15 +581,10 @@ h3.h4 {
 /* Reading text: a little larger, and narrow enough to stay under ~80 characters a line */
 .talk-body > p,
 .talk-item p,
-#about-header p,
 #seminar p {
   font-size: 1.125rem;
   max-width: 38rem;
   text-wrap: pretty;
-}
-/* The intro is two short lines split by a manual break, so it keeps its natural width */
-#about-header p {
-  max-width: none;
 }
 #seminarsContainer li {
   margin-bottom: 0.3rem;
