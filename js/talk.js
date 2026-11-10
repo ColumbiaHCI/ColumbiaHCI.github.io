@@ -210,6 +210,7 @@ const TalkPage = {
             <div class="talk-body${paired ? ' talk-body-wide' : ''}">
                 ${talksSection}
                 ${section('Abstract', row.abstract)}
+                ${row.summary ? section('About the talk', row.summary) : ''}
                 ${section('Bio', row.bio)}
                 ${gallerySection}
             </div>
