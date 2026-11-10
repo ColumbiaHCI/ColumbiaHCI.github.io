@@ -10,8 +10,10 @@ const TalkPage = {
         CSB: { name: 'Computer Science Building', address: '1214 Amsterdam Ave, New York, NY 10027' }
     },
 
+    rows: [],
+
     talkId(row) {
-        return `${row.semester}-${(row.date || '').replace('/', '-')}`;
+        return Utils.talkId(row, this.rows);
     },
 
     splitList(value) {
@@ -266,6 +268,7 @@ const TalkPage = {
             header: true,
             skipEmptyLines: true,
             complete: (results) => {
+                this.rows = results.data;
                 const row = results.data.find(r => r.semester && this.talkId(r) === id);
                 if (!row) {
                     $('#talk').html('<p>Talk not found. <a href="/#seminar">See all seminars</a>.</p>');
