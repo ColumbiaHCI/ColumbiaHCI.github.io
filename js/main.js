@@ -194,6 +194,30 @@ const Utils = {
         const pb = parse(b);
         if (pa.year !== pb.year) return pa.year - pb.year;
         return pa.seasonOrder - pb.seasonOrder;
+    },
+
+    /**
+     * Talk page id, e.g. "fall2026-11-09". When two talks share a date, the first
+     * one in the CSV keeps the plain id and later ones add the speaker's name
+     * ("fall2026-11-09-anusha-withana"), so links already sent out keep working.
+     */
+    talkId(row, rows) {
+        const base = `${row.semester}-${(row.date || '').replace('/', '-')}`;
+        const first = (rows || []).find(r => r.semester === row.semester && r.date === row.date);
+        if (!first || first === row) return base;
+        const slug = (row.name || '').toLowerCase().normalize('NFD').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+        return `${base}-${slug}`;
+    },
+
+    /** Minutes after midnight for the start of "1:00-2:00 PM" or "11:45 AM-12:30 PM". */
+    startMinutes(time) {
+        const range = (time || '').split('-').map(s => s.trim());
+        const match = (range[0] || '').match(/(\d{1,2}):(\d{2})\s*(AM|PM)?/i);
+        if (!match) return 0;
+        // The start inherits the end's AM/PM when it has none
+        const meridiem = (match[3] || ((range[1] || '').match(/AM|PM/i) || [])[0] || '').toUpperCase();
+        const hour = parseInt(match[1], 10) % 12 + (meridiem === 'PM' ? 12 : 0);
+        return hour * 60 + parseInt(match[2], 10);
     }
 };
 
@@ -612,6 +636,7 @@ setPublicationYear(year, groupedPublications) {
             }
             
             STATE.seminarsData[semester].push({
+                id: Utils.talkId(row, data),
                 date: row.date || '',
                 name: row.name || '',
                 url: row.url || '',
@@ -631,10 +656,11 @@ setPublicationYear(year, groupedPublications) {
                     const dateA = new Date(a.date);
                     const dateB = new Date(b.date);
                     if (!isNaN(dateA) && !isNaN(dateB)) {
-                        return dateA - dateB;
+                        if (dateA - dateB) return dateA - dateB;
                     }
                 }
-                return 0;
+                // Talks on the same day go in order of start time
+                return Utils.startMinutes(a.time) - Utils.startMinutes(b.time);
             });
         });
     },
@@ -727,7 +753,7 @@ setPublicationYear(year, groupedPublications) {
         seminars.forEach(seminar => {
             html += '<li>';
             
-            const talkUrl = `talk.html?id=${selectedSemester}-${seminar.date.replace('/', '-')}`;
+            const talkUrl = `talk.html?id=${seminar.id}`;
             const speaker = seminar.name
                 ? `<span class="seminar-speaker">${seminar.name}</span>`
                 : 'Speaker to be announced';
