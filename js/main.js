@@ -514,7 +514,16 @@ setPublicationYear(year, groupedPublications) {
     const yearSection = $('<div>').addClass('year-section').css('width', '100%');
 
     const conferenceContainer = $('<div>').appendTo(yearSection);
-    Object.entries(groupedPublications[year]).forEach(([conference, pubs]) => {
+    const conferencePriority = ['CHI', 'TOCHI', 'UIST', 'CSCW', 'IWUMT', 'DIS','IUI'];
+    const conferences = Object.entries(groupedPublications[year]).sort(([a], [b]) => {
+        const priority = conference => {
+            const acronym = conferencePriority.findIndex(name => new RegExp(`\\b${name}\\b`, 'i').test(conference));
+            return acronym === -1 ? conferencePriority.length : acronym;
+        };
+        return priority(a) - priority(b) || a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' });
+    });
+
+    conferences.forEach(([conference, pubs]) => {
         const conferenceDiv = $('<div>').addClass('conference mb-3');
         $('<h3>').addClass('h4').text(conference).appendTo(conferenceDiv);
 
